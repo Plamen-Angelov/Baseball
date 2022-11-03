@@ -5,6 +5,10 @@ VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baseball", "Baseball\Baseball.csproj", "{7440EC85-F385-4A6A-A150-E600774C3BBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baseball.Core", "Baseball.Core\Baseball.Core.csproj", "{57A1A795-11C9-4432-9DE9-4A49E240595B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baseball.Infrastructure", "Baseball.Infrastructure\Baseball.Infrastructure.csproj", "{F152514E-AC18-4668-8409-030B745B3699}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7440EC85-F385-4A6A-A150-E600774C3BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7440EC85-F385-4A6A-A150-E600774C3BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7440EC85-F385-4A6A-A150-E600774C3BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57A1A795-11C9-4432-9DE9-4A49E240595B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57A1A795-11C9-4432-9DE9-4A49E240595B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57A1A795-11C9-4432-9DE9-4A49E240595B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57A1A795-11C9-4432-9DE9-4A49E240595B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F152514E-AC18-4668-8409-030B745B3699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F152514E-AC18-4668-8409-030B745B3699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F152514E-AC18-4668-8409-030B745B3699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F152514E-AC18-4668-8409-030B745B3699}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
