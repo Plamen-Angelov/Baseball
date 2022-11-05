@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Baseball.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class BaseballDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public BaseballDbContext(DbContextOptions<BaseballDbContext> options)
             : base(options)
         {
         }
