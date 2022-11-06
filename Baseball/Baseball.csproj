@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Baseball.Common\Baseball.Common.csproj" />
     <ProjectReference Include="..\Baseball.Core\Baseball.Core.csproj" />
-    <ProjectReference Include="..\Baseball.Infrastructure\Baseball.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

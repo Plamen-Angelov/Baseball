@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Entities\" />
+    <ProjectReference Include="..\Baseball.Common\Baseball.Common.csproj" />
   </ItemGroup>
 
 </Project>
