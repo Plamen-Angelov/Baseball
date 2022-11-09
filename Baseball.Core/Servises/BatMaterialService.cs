@@ -1,15 +1,16 @@
 ﻿using Baseball.Common.ViewModels;
 using Baseball.Core.Contracts;
-using Baseball.Infrastructure.Data.Entities;
 using Baseball.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Baseball.Core.Servises
 {
     public class BatMaterialService : IBatMaterialService
     {
-        private readonly IRepository<BatMaterial> repository;
+        private readonly IBatMaterialRepository repository;
 
-        public BatMaterialService(IRepository<BatMaterial> repository)
+        public BatMaterialService(IBatMaterialRepository repository)
         {
             this.repository = repository;
         }
@@ -17,6 +18,7 @@ namespace Baseball.Core.Servises
         public IEnumerable<BatMaterialViewModel> GetAllBatMaterials()
         {
             var materials = repository.GetAll()
+                .Result
                 .Select(m => new BatMaterialViewModel()
                 {
                     Id = m.Id,
@@ -26,5 +28,10 @@ namespace Baseball.Core.Servises
 
             return materials;
         }
+
+        //public Task<int> GetMaterialId(string materialName)
+        //{
+        //    return repository.GetMaterialId(materialName);
+        //}
     }
 }

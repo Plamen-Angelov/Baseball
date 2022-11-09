@@ -6,6 +6,10 @@ namespace Baseball.Core.Contracts
     {
         IEnumerable<BatViewModel> GetAll();
 
-        Task AddAsync(BatViewModel model);
+        Task AddAsync(AddBatViewModel model);
+
+        Task<AddBatViewModel> GetByIdAsync(int id);
+
+        Task UpdateAsync(int id, BatViewModel model);
     }
 }

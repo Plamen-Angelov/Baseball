@@ -3,10 +3,10 @@ using static Baseball.Common.Constants;
 
 namespace Baseball.Infrastructure.Data.Entities
 {
-    public class BatMaterial
+    public class BatMaterial : DbModel
     {
-        [Key]
-        public int Id { get; set; }
+        //[Key]
+        //public int Id { get; set; }
 
         [Required]
         [MaxLength(Bat_MaterialName_MaxLength)]

@@ -7,7 +7,7 @@ namespace Baseball.Infrastructure.Repository
 
         Task<T> GetByIdAsync(object id);
 
-        IQueryable<T> GetAll();
+        Task<List<T>> GetAllAsync();
 
         void UpdateAsync(T entity);
 

@@ -8,25 +8,34 @@ namespace Baseball.Core.Servises
     public class BatService : IBatService
     {
         private readonly IRepository<Bat> repository;
-        //private readonly IBatMaterialService batMaterialService;
+        private readonly IBatMaterialService batMaterialService;
 
-        public BatService(IRepository<Bat> repository)
+        public BatService(IRepository<Bat> repository, IBatMaterialService service)
         {
             this.repository = repository;
-            //this.batMaterialService = batMaterialService;
+            this.batMaterialService = service;
         }
 
-        public Task AddAsync(BatViewModel model)
+        public async Task AddAsync(AddBatViewModel model)
         {
-            throw new NotImplementedException();
+            var bat = new Bat()
+            {
+                Brand = model.Brand,
+                Size = model.Size,
+                BatMaterialId = model.MaterialId
+            };
+
+            await repository.AddAsync(bat);
+            await repository.SaveChangesAsync();
         }
 
         public IEnumerable<BatViewModel> GetAll()
         {
-            var bats = repository.GetAll()
-                .Where(b => b.IsDeleted == false)
+            var bats = repository.GetAllAsync()
+                .Result
                 .Select(b => new BatViewModel()
                 {
+                    id = b.Id,
                     Material = b.BatMaterial.Name,
                     Size = b.Size,
                     Brand = b.Brand
@@ -36,11 +45,41 @@ namespace Baseball.Core.Servises
             return bats;
         }
 
-        //public IEnumerable<BatMaterialViewModel> GetAllBatMaterials()
-        //{
-        //   var materials = batMaterialService.GetAllBatMaterials().ToList();
+        public async Task<AddBatViewModel> GetByIdAsync(int id)
+        {
+            var bat = await repository.GetByIdAsync(id);
 
-        //    return materials;
-        //}
+            if (bat == null || bat.IsDeleted == true)
+            {
+                throw new ArgumentException("Bat was not found");
+            }
+
+            var batVieeModel = new AddBatViewModel()
+            {
+                MaterialId = bat.BatMaterial.Id,
+                Materials = batMaterialService.GetAllBatMaterials().ToList(),
+                Size = bat.Size,
+                Brand = bat.Brand
+            };
+
+            return batVieeModel;
+        }
+
+        public async Task UpdateAsync(int id, BatViewModel model)
+        {
+            var bat = await repository.GetByIdAsync(id);
+
+            if (bat == null || bat.IsDeleted == true)
+            {
+                throw new ArgumentException("Bat was not found");
+            }
+
+            bat.Brand = model.Brand;
+            bat.Size = model.Size;
+            bat.BatMaterial.Name = model.Material;
+
+            repository.UpdateAsync(bat);
+            repository.SaveChangesAsync();
+        }
     }
 }

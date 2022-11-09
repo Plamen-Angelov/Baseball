@@ -2,7 +2,9 @@
 {
     public class BatViewModel
     {
-        public string Material { get; set; }
+        public int id { get; set; }
+
+        public string Material { get; set; } = null!;
 
         public string Brand { get; set; } = null!;
 

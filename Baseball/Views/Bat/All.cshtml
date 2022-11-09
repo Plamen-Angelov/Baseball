@@ -16,6 +16,7 @@
             <th scope="col">Size</th>
             <th scope="col">Material</th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -26,8 +27,17 @@
                 <td>@bat.Size</td>
                 <td>@bat.Material</td>
                 <td>
-                    <form class="input-group-sm" asp-controller="Bat" asp-action="Update">
+                    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Bat" asp-action="Edit" asp-route-id="@bat.id">Edit</a>
+                    @*<form class="input-group-sm" asp-controller="Bat" asp-action="Edit">
                         <input class="fs-6 btn btn-success mb-3 p-2" type="submit" value="Edit" />
+                    </form>*@
+                    @*<form class="input-group-sm" asp-controller="Bat" asp-action="Edit" asp-route-id="@bat.id">
+                        <input class="fs-6 btn btn-success mb-3 p-2" type="submit" value="Edit" />
+                    </form>*@
+                </td>
+                <td>
+                    <form class="input-group-sm" asp-controller="Bat" asp-action="Delete">
+                        <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
                     </form>
                 </td>
             </tr>

@@ -16,6 +16,6 @@ namespace Baseball.Common.ViewModels
         [Required]
         public int MaterialId { get; set; }
 
-        public List<BatMaterialViewModel> Materials { get; set; }
+        public List<BatMaterialViewModel>? Materials { get; set; }
     }
 }

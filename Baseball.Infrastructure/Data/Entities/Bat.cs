@@ -4,10 +4,10 @@ using static Baseball.Common.Constants;
 
 namespace Baseball.Infrastructure.Data.Entities
 {
-    public class Bat
+    public class Bat : DbModel
     {
-        [Key]
-        public int Id { get; set; }
+        //[Key]
+        //public int Id { get; set; }
 
         [Required]
         [ForeignKey(nameof(BatMaterial))]
@@ -23,6 +23,6 @@ namespace Baseball.Infrastructure.Data.Entities
         [Required]
         public int Size { get; set; }
 
-        public bool IsDeleted { get; set; }
+        //public bool IsDeleted { get; set; }
     }
 }
