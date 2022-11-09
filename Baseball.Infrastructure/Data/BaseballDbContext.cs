@@ -24,5 +24,32 @@ namespace Baseball.Infrastructure.Data
         public DbSet<Team> Teams { get; set; }
 
         public DbSet<TeamResult> TeamResults { get; set; }
+
+        public DbSet<BatMaterial> BatMaterials { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<BatMaterial>()
+                .HasData(BatMaterialSeed());
+
+            base.OnModelCreating(builder);
+        }
+
+        private List<BatMaterial> BatMaterialSeed()
+        {
+            return new List<BatMaterial>()
+            {
+                new BatMaterial()
+                {
+                    Id = 1,
+                    Name = "Wood"
+                },
+                new BatMaterial()
+                {
+                    Id = 2,
+                    Name = "Aluminium"
+                }
+            };
+        }
     }
 }

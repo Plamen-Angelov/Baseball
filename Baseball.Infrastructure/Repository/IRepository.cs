@@ -1,13 +1,13 @@
 ﻿
 namespace Baseball.Infrastructure.Repository
 {
-    internal interface IRepository<T> : IDisposable where T : class
+    public interface IRepository<T> : IDisposable where T : class
     {
         Task AddAsync(T entity);
 
         Task<T> GetByIdAsync(object id);
 
-        IEnumerable<T> GetAllAsync();
+        IQueryable<T> GetAll();
 
         void UpdateAsync(T entity);
 

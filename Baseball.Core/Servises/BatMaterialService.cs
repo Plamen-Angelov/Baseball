@@ -1,0 +1,30 @@
+﻿using Baseball.Common.ViewModels;
+using Baseball.Core.Contracts;
+using Baseball.Infrastructure.Data.Entities;
+using Baseball.Infrastructure.Repository;
+
+namespace Baseball.Core.Servises
+{
+    public class BatMaterialService : IBatMaterialService
+    {
+        private readonly IRepository<BatMaterial> repository;
+
+        public BatMaterialService(IRepository<BatMaterial> repository)
+        {
+            this.repository = repository;
+        }
+
+        public IEnumerable<BatMaterialViewModel> GetAllBatMaterials()
+        {
+            var materials = repository.GetAll()
+                .Select(m => new BatMaterialViewModel()
+                {
+                    Id = m.Id,
+                    Name = m.Name
+                })
+                .ToList();
+
+            return materials;
+        }
+    }
+}

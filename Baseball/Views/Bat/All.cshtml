@@ -1,0 +1,36 @@
+﻿@model List<BatViewModel>
+
+@{
+    ViewBag.Title = "All Bats";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Bat" asp-action="Add">Add new bat</a>
+<hr />
+
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Brand</th>
+            <th scope="col">Size</th>
+            <th scope="col">Material</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bat in Model)
+        {
+            <tr>
+                <td>@bat.Brand</td>
+                <td>@bat.Size</td>
+                <td>@bat.Material</td>
+                <td>
+                    <form class="input-group-sm" asp-controller="Bat" asp-action="Update">
+                        <input class="fs-6 btn btn-success mb-3 p-2" type="submit" value="Edit" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

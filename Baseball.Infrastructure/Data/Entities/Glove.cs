@@ -17,5 +17,7 @@ namespace Baseball.Infrastructure.Data.Entities
 
         [MaxLength(Glove_Color_MaxLength)]
         public string Color { get; set; } = null!;
+
+        public bool IsDeleted { get; set; }
     }
 }

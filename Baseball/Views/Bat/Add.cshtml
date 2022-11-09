@@ -1,0 +1,44 @@
+﻿@model AddBatViewModel
+
+@{
+    ViewBag.Title = "Add Bat";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Add" method="post">
+            <div class="mb-3">
+                <label asp-for="@Model.Brand" class="form-label">Brand</label>
+                <input asp-for="@Model.Brand" class="form-control" aria-required="true" />
+                <span asp-validation-for="Brand" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Size" class="form-label">Size</label>
+                <input asp-for="@Model.Size" class="form-control" aria-required="true" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.MaterialId" class="form-label">Category</label>
+                <select asp-for="@Model.MaterialId" class="form-control">
+                    @foreach (var material in Model.Materials)
+                    {
+                        <option value="@material.Id">@material.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="MaterialId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Add" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,9 +1,15 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
+using static Baseball.Common.Constants;
+
 namespace Baseball.Infrastructure.Data.Entities
 {
-    public enum BatMaterial
+    public class BatMaterial
     {
-        Wood = 1,
-        Aluminium = 2
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        [MaxLength(Bat_MaterialName_MaxLength)]
+        public string Name { get; set; } = null!;
     }
 }

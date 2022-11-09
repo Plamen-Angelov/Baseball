@@ -37,5 +37,7 @@ namespace Baseball.Infrastructure.Data.Entities
 
         [Required]
         public double BattingAverage { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

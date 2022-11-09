@@ -4,6 +4,7 @@ using Baseball.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Baseball.Infrastructure.Migrations
 {
     [DbContext(typeof(BaseballDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221109173702_AddBatMaterialTableWithData")]
+    partial class AddBatMaterialTableWithData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +32,6 @@ namespace Baseball.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("BatMaterialId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Brand")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -41,12 +40,15 @@ namespace Baseball.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BatMaterialId");
+                    b.HasIndex("MaterialId");
 
                     b.ToTable("Bats");
                 });
@@ -512,13 +514,13 @@ namespace Baseball.Infrastructure.Migrations
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Bat", b =>
                 {
-                    b.HasOne("Baseball.Infrastructure.Data.Entities.BatMaterial", "BatMaterial")
+                    b.HasOne("Baseball.Infrastructure.Data.Entities.BatMaterial", "Material")
                         .WithMany()
-                        .HasForeignKey("BatMaterialId")
+                        .HasForeignKey("MaterialId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BatMaterial");
+                    b.Navigation("Material");
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Game", b =>

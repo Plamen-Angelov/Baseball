@@ -1,4 +1,8 @@
+using Baseball.Core.Contracts;
+using Baseball.Core.Servises;
 using Baseball.Infrastructure.Data;
+using Baseball.Infrastructure.Data.Entities;
+using Baseball.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +23,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 .AddEntityFrameworkStores<BaseballDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IRepository<Bat>, Repository<Bat>>();
+builder.Services.AddScoped<IRepository<BatMaterial>, Repository<BatMaterial>>();
+
+builder.Services.AddScoped<IBatService, BatService>();
+builder.Services.AddScoped<IBatMaterialService, BatMaterialService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,7 +47,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

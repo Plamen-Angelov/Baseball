@@ -24,9 +24,9 @@ namespace Baseball.Infrastructure.Repository
             context.DisposeAsync();
         }
 
-        public IEnumerable<T> GetAllAsync()
+        public IQueryable<T> GetAll()
         {
-            return entities.AsEnumerable();
+            return entities.AsQueryable();
         }
 
         public async Task<T> GetByIdAsync(object id)

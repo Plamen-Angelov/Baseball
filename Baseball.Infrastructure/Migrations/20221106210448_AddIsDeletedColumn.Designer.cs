@@ -4,6 +4,7 @@ using Baseball.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Baseball.Infrastructure.Migrations
 {
     [DbContext(typeof(BaseballDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221106210448_AddIsDeletedColumn")]
+    partial class AddIsDeletedColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +32,6 @@ namespace Baseball.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("BatMaterialId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Brand")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -41,44 +40,15 @@ namespace Baseball.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Material")
+                        .HasColumnType("int");
+
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BatMaterialId");
-
                     b.ToTable("Bats");
-                });
-
-            modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.BatMaterial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BatMaterials");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Wood"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Aluminium"
-                        });
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.ChampionShip", b =>
@@ -508,17 +478,6 @@ namespace Baseball.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Bat", b =>
-                {
-                    b.HasOne("Baseball.Infrastructure.Data.Entities.BatMaterial", "BatMaterial")
-                        .WithMany()
-                        .HasForeignKey("BatMaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BatMaterial");
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Game", b =>
