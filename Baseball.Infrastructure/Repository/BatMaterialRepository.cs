@@ -21,5 +21,21 @@ namespace Baseball.Infrastructure.Repository
 
             return materials;
         }
+
+        //public async Task<int> GetMaterialIdAsync(string materialName)
+        //{
+        //    return await context.BatMaterials
+        //        .Where(m => m.Name == materialName)
+        //        .Select(m => m.Id)
+        //        .FirstOrDefaultAsync();
+        //}
+
+        public async Task<string?> GetMaterialNameByIdAsync(int materialId)
+        {
+            return await context.BatMaterials
+               .Where(m => m.Id == materialId)
+               .Select(m => m.Name)
+               .FirstOrDefaultAsync();
+        }
     }
 }

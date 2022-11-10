@@ -28,15 +28,9 @@
                 <td>@bat.Material</td>
                 <td>
                     <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Bat" asp-action="Edit" asp-route-id="@bat.id">Edit</a>
-                    @*<form class="input-group-sm" asp-controller="Bat" asp-action="Edit">
-                        <input class="fs-6 btn btn-success mb-3 p-2" type="submit" value="Edit" />
-                    </form>*@
-                    @*<form class="input-group-sm" asp-controller="Bat" asp-action="Edit" asp-route-id="@bat.id">
-                        <input class="fs-6 btn btn-success mb-3 p-2" type="submit" value="Edit" />
-                    </form>*@
                 </td>
                 <td>
-                    <form class="input-group-sm" asp-controller="Bat" asp-action="Delete">
+                    <form class="input-group-sm" asp-controller="Bat" asp-action="Delete" asp-route-id="@bat.id">
                         <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
                     </form>
                 </td>

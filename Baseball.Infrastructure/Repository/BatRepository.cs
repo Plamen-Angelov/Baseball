@@ -27,7 +27,7 @@ namespace Baseball.Infrastructure.Repository
                 .ToListAsync();
         }
 
-        public async Task<Bat> GetByIdAsync(object id)
+        public async Task<Bat?> GetByIdAsync(object id)
         {
             return await context.Bats
                 .Include(b => b.BatMaterial)
@@ -42,7 +42,9 @@ namespace Baseball.Infrastructure.Repository
 
         public void UpdateAsync(Bat entity)
         {
-            context.Update(entity);
+            context.Attach(entity);
+            context.Entry(entity).State = EntityState.Modified;
+            //context.Update(entity);
         }
 
         public void Dispose()

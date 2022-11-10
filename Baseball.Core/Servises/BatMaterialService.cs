@@ -1,7 +1,6 @@
 ﻿using Baseball.Common.ViewModels;
 using Baseball.Core.Contracts;
 using Baseball.Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace Baseball.Core.Servises
@@ -29,9 +28,14 @@ namespace Baseball.Core.Servises
             return materials;
         }
 
-        //public Task<int> GetMaterialId(string materialName)
+        //public Task<int> GetMaterialIdAsync(string materialName)
         //{
-        //    return repository.GetMaterialId(materialName);
+        //    return repository.GetMaterialIdAsync(materialName);
         //}
+
+        public Task<string> GetMaterialNameByIdAsync(int materialid)
+        {
+            return repository.GetMaterialNameByIdAsync(materialid);
+        }
     }
 }

@@ -5,6 +5,8 @@ namespace Baseball.Common.ViewModels
 {
     public class AddBatViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         [StringLength(Bat_Brand_MaxLength, MinimumLength = Bat_Brand_MinLength)]
         public string Brand { get; set; } = null!;

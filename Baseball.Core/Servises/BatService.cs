@@ -56,6 +56,7 @@ namespace Baseball.Core.Servises
 
             var batVieeModel = new AddBatViewModel()
             {
+                Id = id,
                 MaterialId = bat.BatMaterial.Id,
                 Materials = batMaterialService.GetAllBatMaterials().ToList(),
                 Size = bat.Size,
@@ -65,7 +66,7 @@ namespace Baseball.Core.Servises
             return batVieeModel;
         }
 
-        public async Task UpdateAsync(int id, BatViewModel model)
+        public async Task UpdateAsync(int id, AddBatViewModel model)
         {
             var bat = await repository.GetByIdAsync(id);
 
@@ -76,10 +77,25 @@ namespace Baseball.Core.Servises
 
             bat.Brand = model.Brand;
             bat.Size = model.Size;
-            bat.BatMaterial.Name = model.Material;
+            bat.BatMaterial.Name = await batMaterialService.GetMaterialNameByIdAsync(model.MaterialId);
 
             repository.UpdateAsync(bat);
-            repository.SaveChangesAsync();
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var bat = await repository.GetByIdAsync(id);
+
+            if (bat == null || bat.IsDeleted == true)
+            {
+                throw new ArgumentException("Bat was not found");
+            }
+
+            bat.IsDeleted = true;
+
+            repository.UpdateAsync(bat);
+            await repository.SaveChangesAsync();
         }
     }
 }
