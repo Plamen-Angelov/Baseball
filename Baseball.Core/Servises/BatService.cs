@@ -77,7 +77,7 @@ namespace Baseball.Core.Servises
 
             bat.Brand = model.Brand;
             bat.Size = model.Size;
-            bat.BatMaterial.Name = await batMaterialService.GetMaterialNameByIdAsync(model.MaterialId);
+            bat.BatMaterialId = model.MaterialId;
 
             repository.UpdateAsync(bat);
             await repository.SaveChangesAsync();

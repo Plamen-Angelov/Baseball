@@ -8,6 +8,6 @@ namespace Baseball.Infrastructure.Repository
 
         //Task<int> GetMaterialIdAsync(string materialName);
 
-        Task<string> GetMaterialNameByIdAsync(int materialId);
+        //Task<string> GetMaterialNameByIdAsync(int materialId);
     }
 }

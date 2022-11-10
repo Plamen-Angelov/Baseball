@@ -8,7 +8,7 @@ namespace Baseball.Core.Contracts
 
         //Task<int> GetMaterialIdAsync(string materialName);
 
-        Task<string> GetMaterialNameByIdAsync(int materialId);
+        //Task<string> GetMaterialNameByIdAsync(int materialId);
 
     }
 }

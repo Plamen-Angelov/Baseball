@@ -30,12 +30,12 @@ namespace Baseball.Infrastructure.Repository
         //        .FirstOrDefaultAsync();
         //}
 
-        public async Task<string?> GetMaterialNameByIdAsync(int materialId)
-        {
-            return await context.BatMaterials
-               .Where(m => m.Id == materialId)
-               .Select(m => m.Name)
-               .FirstOrDefaultAsync();
-        }
+        //public async Task<string?> GetMaterialNameByIdAsync(int materialId)
+        //{
+        //    return await context.BatMaterials
+        //       .Where(m => m.Id == materialId)
+        //       .Select(m => m.Name)
+        //       .FirstOrDefaultAsync();
+        //}
     }
 }

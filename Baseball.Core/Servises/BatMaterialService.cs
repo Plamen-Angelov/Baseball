@@ -33,9 +33,9 @@ namespace Baseball.Core.Servises
         //    return repository.GetMaterialIdAsync(materialName);
         //}
 
-        public Task<string> GetMaterialNameByIdAsync(int materialid)
-        {
-            return repository.GetMaterialNameByIdAsync(materialid);
-        }
+        //public Task<string> GetMaterialNameByIdAsync(int materialid)
+        //{
+        //    return repository.GetMaterialNameByIdAsync(materialid);
+        //}
     }
 }
