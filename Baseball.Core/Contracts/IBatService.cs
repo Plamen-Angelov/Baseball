@@ -1,4 +1,4 @@
-﻿using Baseball.Common.ViewModels;
+﻿using Baseball.Common.ViewModels.BatViewModels;
 
 namespace Baseball.Core.Contracts
 {

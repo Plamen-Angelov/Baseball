@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static Baseball.Common.Constants;
 
-namespace Baseball.Common.ViewModels
+namespace Baseball.Common.ViewModels.BatViewModels
 {
     public class AddBatViewModel
     {

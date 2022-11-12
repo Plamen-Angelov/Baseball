@@ -1,3 +1,4 @@
+using Baseball.Common.Binders;
 using Baseball.Core.Contracts;
 using Baseball.Core.Servises;
 using Baseball.Infrastructure.Data;
@@ -21,7 +22,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.Password.RequiredLength = 5;
 })
 .AddEntityFrameworkStores<BaseballDbContext>();
-builder.Services.AddControllersWithViews();
+
+builder.Services.AddControllersWithViews()
+    .AddMvcOptions(options =>
+    {
+        options.ModelBinderProviders.Insert(0, new DoubleModelBinderProvider());
+    });
 
 builder.Services.AddScoped<IRepository, Repository>();
 

@@ -1,4 +1,4 @@
-﻿namespace Baseball.Common.ViewModels
+﻿namespace Baseball.Common.ViewModels.BatViewModels
 {
     public class BatViewModel
     {
