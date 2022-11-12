@@ -23,8 +23,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 .AddEntityFrameworkStores<BaseballDbContext>();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IBatMaterialRepository, BatMaterialRepository>();
-builder.Services.AddScoped<IRepository<Bat>, BatRepository>();
+builder.Services.AddScoped<IRepository, Repository>();
 
 builder.Services.AddScoped<IBatService, BatService>();
 builder.Services.AddScoped<IBatMaterialService, BatMaterialService>();

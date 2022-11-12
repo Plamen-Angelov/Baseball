@@ -1,15 +1,17 @@
 ﻿
+using Baseball.Infrastructure.Data.Entities;
+
 namespace Baseball.Infrastructure.Repository
 {
-    public interface IRepository<T> : IDisposable where T : class
+    public interface IRepository : IDisposable
     {
-        Task AddAsync(T entity);
 
-        Task<T> GetByIdAsync(object id);
 
-        Task<List<T>> GetAllAsync();
+        Task AddAsync<T>(T entity) where T : class;
 
-        void UpdateAsync(T entity);
+        IQueryable<T> GetAll<T>() where T : class;
+
+        void UpdateAsync<T>(T entity) where T : class;
 
         Task<int> SaveChangesAsync();
     }

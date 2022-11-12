@@ -1,54 +1,47 @@
-﻿//using Baseball.Infrastructure.Data;
-//using Microsoft.EntityFrameworkCore;
+﻿using Baseball.Infrastructure.Data;
+using Baseball.Infrastructure.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
-//namespace Baseball.Infrastructure.Repository
-//{
-//    public class Repository<DbModel> : IRepository<DbModel> where DbModel : class
-//    {
-//        private BaseballDbContext context;
-//        private DbSet<DbModel> entities;
+namespace Baseball.Infrastructure.Repository
+{
+    public class Repository : IRepository
+    {
+        private BaseballDbContext context;
 
-//        public Repository(BaseballDbContext context)
-//        {
-//            this.context = context;
-//            entities = context.Set<DbModel>();
-//        }
+        private DbSet<T> DbSet<T>() where T : class
+        {
+            return context.Set<T>();
+        }
 
-//        public async Task AddAsync(DbModel entity)
-//        {
-//            await entities.AddAsync(entity);
-//        }
+        public Repository(BaseballDbContext context)
+        {
+            this.context = context;
+        }
 
-//        public void Dispose()
-//        {
-//            context.DisposeAsync();
-//        }
+        public async Task AddAsync<T>(T entity) where T : class
+        {
+            await context.AddAsync(entity);
+        }
 
-//        //public IQueryable<DbModel> GetAllAsync()
-//        //{
-//        //    return entities.AsQueryable();
-//        //}
+        public void Dispose()
+        {
+            context.DisposeAsync();
+        }
 
-//        public async Task<DbModel> GetByIdAsync(object id)
-//        {
-//            DbModel? entity = await entities.FindAsync(id);
+        public IQueryable<T> GetAll<T>() where T : class
+        {
+            return DbSet<T>()
+                .AsQueryable();
+        }
 
-//            return entity;
-//        }
+        public async Task<int> SaveChangesAsync()
+        {
+            return await context.SaveChangesAsync();
+        }
 
-//        public async Task<int> SaveChangesAsync()
-//        {
-//            return await context.SaveChangesAsync();
-//        }
-
-//        public void UpdateAsync(DbModel entity)
-//        {
-//            context.Update(entity);
-//        }
-
-//        public async Task<List<DbModel>> GetAllAsync()
-//        {
-//            return await entities.ToListAsync();
-//        }
-//    }
-//}
+        public void UpdateAsync<T>(T entity) where T : class
+        {
+            DbSet<T>().Update(entity);
+        }
+    }
+}

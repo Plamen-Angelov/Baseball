@@ -48,7 +48,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasIndex("BatMaterialId");
 
-                    b.ToTable("Bats");
+                    b.ToTable("Bats", (string)null);
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.BatMaterial", b =>
@@ -69,7 +69,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BatMaterials");
+                    b.ToTable("BatMaterials", (string)null);
 
                     b.HasData(
                         new
@@ -107,7 +107,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChampionShips");
+                    b.ToTable("ChampionShips", (string)null);
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Game", b =>
@@ -169,7 +169,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasIndex("ChampionShipId");
 
-                    b.ToTable("Games");
+                    b.ToTable("Games", (string)null);
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Glove", b =>
@@ -198,7 +198,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Gloves");
+                    b.ToTable("Gloves", (string)null);
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Player", b =>
@@ -244,7 +244,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasIndex("GloveId");
 
-                    b.ToTable("Players");
+                    b.ToTable("Players", (string)null);
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Team", b =>
@@ -275,7 +275,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.TeamResult", b =>
@@ -310,7 +310,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasIndex("ChampionShipId");
 
-                    b.ToTable("TeamResults");
+                    b.ToTable("TeamResults", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

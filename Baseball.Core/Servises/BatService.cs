@@ -2,15 +2,16 @@
 using Baseball.Core.Contracts;
 using Baseball.Infrastructure.Data.Entities;
 using Baseball.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Baseball.Core.Servises
 {
     public class BatService : IBatService
     {
-        private readonly IRepository<Bat> repository;
+        private readonly IRepository repository;
         private readonly IBatMaterialService batMaterialService;
 
-        public BatService(IRepository<Bat> repository, IBatMaterialService service)
+        public BatService(IRepository repository, IBatMaterialService service)
         {
             this.repository = repository;
             this.batMaterialService = service;
@@ -31,8 +32,9 @@ namespace Baseball.Core.Servises
 
         public IEnumerable<BatViewModel> GetAll()
         {
-            var bats = repository.GetAllAsync()
-                .Result
+            var bats = repository.GetAll<Bat>()
+                .Include(b => b.BatMaterial)
+                .Where(b => b.IsDeleted == false)
                 .Select(b => new BatViewModel()
                 {
                     id = b.Id,
@@ -45,9 +47,12 @@ namespace Baseball.Core.Servises
             return bats;
         }
 
-        public async Task<AddBatViewModel> GetByIdAsync(int id)
+        public AddBatViewModel GetById(int id)
         {
-            var bat = await repository.GetByIdAsync(id);
+            var bat = repository
+                .GetAll<Bat>()
+                .Include(b => b.BatMaterial)
+                .FirstOrDefault(b => b.Id == id);
 
             if (bat == null || bat.IsDeleted == true)
             {
@@ -68,7 +73,10 @@ namespace Baseball.Core.Servises
 
         public async Task UpdateAsync(int id, AddBatViewModel model)
         {
-            var bat = await repository.GetByIdAsync(id);
+            var bat = repository
+                .GetAll<Bat>()
+                .Include(b => b.BatMaterial)
+                .FirstOrDefault(b => b.Id == id);
 
             if (bat == null || bat.IsDeleted == true)
             {
@@ -85,7 +93,10 @@ namespace Baseball.Core.Servises
 
         public async Task DeleteAsync(int id)
         {
-            var bat = await repository.GetByIdAsync(id);
+            var bat = repository
+                .GetAll<Bat>()
+                .Include(b => b.BatMaterial)
+                .FirstOrDefault(b => b.Id == id);
 
             if (bat == null || bat.IsDeleted == true)
             {

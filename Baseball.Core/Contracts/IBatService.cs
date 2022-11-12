@@ -8,7 +8,7 @@ namespace Baseball.Core.Contracts
 
         Task AddAsync(AddBatViewModel model);
 
-        Task<AddBatViewModel> GetByIdAsync(int id);
+        AddBatViewModel GetById(int id);
 
         Task UpdateAsync(int id, AddBatViewModel model);
 

@@ -56,11 +56,11 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
             try
             {
-                var model = await batService.GetByIdAsync(id);
+                var model = batService.GetById(id);
                 model.Materials = batMaterialService.GetAllBatMaterials().ToList();
                 return View(model);
 
