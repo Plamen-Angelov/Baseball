@@ -13,11 +13,16 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Baseball.Common\Baseball.Common.csproj" />
     <ProjectReference Include="..\Baseball.Core\Baseball.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Autentication\Data\" />
   </ItemGroup>
 
 </Project>

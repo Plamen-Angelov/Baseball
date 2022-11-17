@@ -78,7 +78,7 @@ namespace Baseball.Core.Servises
                 .Include(b => b.BatMaterial)
                 .FirstOrDefault(b => b.Id == id);
 
-            if (bat == null || bat.IsDeleted == true)
+            if(bat == null || bat.IsDeleted == true)
             {
                 throw new ArgumentException("Bat was not found");
             }

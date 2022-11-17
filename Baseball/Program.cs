@@ -21,6 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 5;
 })
+.AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<BaseballDbContext>();
 
 builder.Services.AddControllersWithViews()
@@ -33,12 +34,14 @@ builder.Services.AddScoped<IRepository, Repository>();
 
 builder.Services.AddScoped<IBatService, BatService>();
 builder.Services.AddScoped<IBatMaterialService, BatMaterialService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
 else
@@ -58,6 +61,15 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+});
+
 app.MapRazorPages();
 
 app.Run();

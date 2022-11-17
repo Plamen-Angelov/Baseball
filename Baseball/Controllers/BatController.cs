@@ -1,9 +1,11 @@
 ﻿using Baseball.Common.ViewModels.BatViewModels;
 using Baseball.Core.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Baseball.Controllers
 {
+    [Authorize]
     public class BatController : Controller
     {
         private readonly IBatService batService;

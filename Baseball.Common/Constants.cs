@@ -19,5 +19,10 @@
         public const int Player_Name_MaxLength = 40;
         public const int Player_Position_MaxLength = 35;
 
+        public const int UserName_MinLegth = 3;
+        public const int UserName_MaxLegth = 20;
+        public const int User_Email_MinLegth = 6;
+        public const int User_Email_MaxLegth = 256;
+        public const int User_Password_MaxLegth = 25;
     }
 }
