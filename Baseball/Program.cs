@@ -2,7 +2,6 @@ using Baseball.Common.Binders;
 using Baseball.Core.Contracts;
 using Baseball.Core.Servises;
 using Baseball.Infrastructure.Data;
-using Baseball.Infrastructure.Data.Entities;
 using Baseball.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +28,12 @@ builder.Services.AddControllersWithViews()
     {
         options.ModelBinderProviders.Insert(0, new DoubleModelBinderProvider());
     });
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/user/login";
+    options.LogoutPath = "/user/logout";
+});
 
 builder.Services.AddScoped<IRepository, Repository>();
 

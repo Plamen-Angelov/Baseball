@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Baseball.Areas.Autentication.Controllers
 {
-//    [Area("Autentication")]
-//    [Route("autentication/[controller]/[action]")]
+    //[Area("Autentication")]
+    //[Route("autentication/[controller]/[action]")]
     public class UserController : Controller
     {
         private readonly UserManager<IdentityUser> userManager;

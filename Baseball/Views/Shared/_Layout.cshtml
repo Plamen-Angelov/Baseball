@@ -27,6 +27,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Bat" asp-action="All">Bats</a>
                             </li>
+                        }
+                        @if (User.IsInRole("Coach"))
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="GetAllUsersWithPlayerRole">Users with player role</a>
                             </li>

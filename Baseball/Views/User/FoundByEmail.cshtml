@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity;
-@model IdentityUser
+@model FoundByEmailViewModel
 
 @{
     ViewBag.Title = "Users found By email";
@@ -20,11 +20,18 @@
     </thead>
     <tbody>
         <tr>
-                <td>@Model.UserName</td>
-                <td>@Model.Email</td>
+            <td>@Model.User.UserName</td>
+            <td>@Model.User.Email</td>
+            @if (Model.IsInRolePlayer)
+            {
+                <td>Player</td>
+            }
+            else
+            {
                 <td>
-                    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="User" asp-action="AddToPlayers" asp-route-id="@Model.Id">Add to player role</a>
+                    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="User" asp-action="AddToPlayers" asp-route-id="@Model.User.Id">Add to player role</a>
                 </td>
-            </tr>
+            }
+        </tr>
     </tbody>
 </table>
