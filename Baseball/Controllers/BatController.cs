@@ -50,9 +50,9 @@ namespace Baseball.Controllers
                 await batService.AddAsync(model);
                 return RedirectToAction(nameof(All));
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                ModelState.AddModelError("", $"Bat wasn't added. {e.Message}");
+                ModelState.AddModelError("", $"Something went wrong. The bat was not added.");
                 return View(model);
             };
         }
@@ -63,7 +63,6 @@ namespace Baseball.Controllers
             try
             {
                 var model = batService.GetById(id);
-                model.Materials = batMaterialService.GetAllBatMaterials().ToList();
                 return View(model);
 
             }
@@ -77,8 +76,22 @@ namespace Baseball.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, AddBatViewModel model)
         {
-            await batService.UpdateAsync(id, model);
-            return RedirectToAction(nameof(All));
+            try
+            {
+                await batService.UpdateAsync(id, model);
+                return RedirectToAction(nameof(All));
+            }
+            catch(ArgumentException ae)
+            {
+                ModelState.AddModelError("", $"{ae.Message}");
+                return View(model);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", $"Unexpected error occured");
+                return View(model);
+            }
+            
         }
 
         [HttpPost]

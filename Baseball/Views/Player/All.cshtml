@@ -1,0 +1,51 @@
+﻿@model List<PlayerViewModel>
+
+@{
+    ViewBag.Title = "All Players";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="Add">Add new Player</a>
+@*<hr />*@
+
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col"><h5>Name</h5></th>
+            <th scope="col"><h5>Number</h5></th>
+            <th scope="col"><h5>Position</h5></th>
+            <th scope="col">Bat</th>
+            <th scope="col">Glove</th>
+            <th scope="col">ThrowHand</th>
+            <th scope="col">BattingAverage</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var player in Model)
+        {
+            <tr>
+                <td>@player.Name</td>
+                <td>@player.Number</td>
+                <td>@player.Position</td>
+                <td>@player.Bat</td>
+                <td>@player.Glove</td>
+                <td>@player.ThrowHand</td>
+                <td>@player.BattingAverage</td>
+                <td>
+                    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="Edit" asp-route-id="@player.Id">Edit</a>
+                </td>
+                <td>
+                    <form class="input-group-sm" asp-controller="Player" asp-action="Delete" asp-route-id="@player.Id">
+                        <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
+                    </form>
+                </td>
+                <td>
+                    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="Edit" asp-route-id="@player.Id">Add to team</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,64 @@
+﻿@model AddPlayerViewModel
+
+@{
+    ViewBag.Title = "Update Player";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Edit" method="post">
+            <div class="mb-3">
+                <label asp-for="@Model.Name" class="form-label">Name</label>
+                <input asp-for="@Model.Name" class="form-control" aria-required="true" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Number" class="form-label">Number</label>
+                <input asp-for="@Model.Number" class="form-control" aria-required="true" />
+                <span asp-validation-for="Number" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Position" class="form-label">Position</label>
+                <input asp-for="@Model.Position" class="form-control" aria-required="true" />
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.BatId" class="form-label">Bat</label>
+                <select asp-for="@Model.BatId" class="form-control">
+                    @foreach (var bat in Model.Bats)
+                    {
+                        <option value="@bat.id">@bat.Brand, @bat.Size, @bat.Material</option>
+                    }
+                </select>
+                <span asp-validation-for="BatId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Glove" class="form-label">Glove</label>
+                <input asp-for="@Model.Glove" class="form-control" aria-required="true" />
+                <span asp-validation-for="Glove" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.ThrowHand" class="form-label">ThrowHand</label>
+                <input asp-for="@Model.ThrowHand" class="form-control" aria-required="true" />
+                <span asp-validation-for="ThrowHand" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.BattingAverage" class="form-label">BattingAverage</label>
+                <input asp-for="@Model.BattingAverage" class="form-control" aria-required="true" />
+                <span asp-validation-for="BattingAverage" class="text-danger"></span>
+            </div>
+            <form class="input-group-sm" asp-controller="Player" asp-action="Edit" asp-route-bookId="@Model.Id">
+                <input type="submit" value="Update" class="fs-6 btn btn-success mb-3 p-2" />
+            </form>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

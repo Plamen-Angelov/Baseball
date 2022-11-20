@@ -1,18 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Baseball.Common.ViewModels.BatViewModels;
+using System.ComponentModel.DataAnnotations;
 using static Baseball.Common.Constants;
 
-namespace Baseball.Infrastructure.Data.Entities
+namespace Baseball.Common.ViewModels.PlayerViewModels
 {
-    public class Player
+    public class AddPlayerViewModel
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(Player_Name_MaxLength)]
+        [StringLength(Player_Name_MaxLength, MinimumLength = Player_Name_MinLength)]
         public string Name { get; set; } = null!;
 
+        [Range(0, 100)]
         public int Number { get; set; }
 
         [Required]
@@ -20,22 +20,19 @@ namespace Baseball.Infrastructure.Data.Entities
         public string Position { get; set; } = null!;
 
         [Required]
-        [ForeignKey(nameof(Bat))]
         public int BatId { get; set; }
 
-        [Required]
-        public Bat Bat { get; set; } = null!;
+        public IEnumerable<BatViewModel>? Bats { get; set; }
 
         [Required]
-        [MaxLength(Player_Glove_MaxLength)]
+        [StringLength(Player_Glove_MaxLength, MinimumLength = Player_Glove_MinLength)]
         public string Glove { get; set; } = null!;
 
         [Required]
         public string ThrowHand { get; set; } = null!;
 
         [Required]
+        [Range(typeof(double), "0", "1")]
         public double BattingAverage { get; set; }
-
-        public bool IsDeleted { get; set; }
     }
 }

@@ -40,6 +40,7 @@ builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IBatService, BatService>();
 builder.Services.AddScoped<IBatMaterialService, BatMaterialService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPlayerServicece, PlayerService>();
 
 var app = builder.Build();
 

@@ -15,8 +15,6 @@ namespace Baseball.Infrastructure.Data
 
         public DbSet<Game> Games { get; set; }
 
-        public DbSet<Glove> Gloves { get; set; }
-
         public DbSet<Bat> Bats { get; set; }
 
         public DbSet<Player> Players { get; set; }

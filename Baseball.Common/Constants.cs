@@ -14,10 +14,11 @@
         public const int Bat_Size_Max = 40;
         public const int Bat_MaterialName_MaxLength = 20;
 
-        public const int Glove_Color_MaxLength = 15;
-
+        public const int Player_Name_MinLength = 5;
         public const int Player_Name_MaxLength = 40;
         public const int Player_Position_MaxLength = 35;
+        public const int Player_Glove_MinLength = 5;
+        public const int Player_Glove_MaxLength = 40;
 
         public const int UserName_MinLegth = 3;
         public const int UserName_MaxLegth = 20;
