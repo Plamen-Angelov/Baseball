@@ -4,6 +4,7 @@ using Baseball.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Baseball.Infrastructure.Migrations
 {
     [DbContext(typeof(BaseballDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221120190701_AddPlayersPropertyToTeam")]
+    partial class AddPlayersPropertyToTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,12 +250,6 @@ namespace Baseball.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("WinGames")
-                        .HasColumnType("int");
-
-                    b.Property<int>("loseGames")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

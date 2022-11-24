@@ -58,6 +58,7 @@ namespace Baseball.Core.Servises
                 })
                 .ToListAsync();
         }
+
         private IQueryable<Player> GetById(int id)
         {
             return repository.GetAll<Player>()

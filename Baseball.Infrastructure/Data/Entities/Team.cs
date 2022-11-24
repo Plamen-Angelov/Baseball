@@ -19,6 +19,12 @@ namespace Baseball.Infrastructure.Data.Entities
         [MaxLength(Team_Color_MaxLength)]
         public string AwayColor { get; set; } = null!;
 
+        public int WinGames { get; set; }
+
+        public int loseGames { get; set; }
+
+        public List<Player> Players { get; set; } = new List<Player>();
+
         public bool IsDeleted { get; set; }
     }
 }

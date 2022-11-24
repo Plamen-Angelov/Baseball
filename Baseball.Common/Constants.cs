@@ -2,7 +2,9 @@
 {
     public static class Constants
     {
+        public const int Team_Name_MinLength = 3;
         public const int Team_Name_MaxLength = 30;
+        public const int Team_Color_MinLength = 3;
         public const int Team_Color_MaxLength = 20;
 
         public const int ChampionShip_Name_MaxLength = 40;
