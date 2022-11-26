@@ -21,8 +21,6 @@ namespace Baseball.Infrastructure.Data
 
         public DbSet<Team> Teams { get; set; }
 
-        public DbSet<TeamResult> TeamResults { get; set; }
-
         public DbSet<BatMaterial> BatMaterials { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

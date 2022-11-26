@@ -15,7 +15,7 @@ namespace Baseball.Infrastructure.Data.Entities
         [Required]
         public int Year { get; set; }
 
-        public ICollection<TeamResult> TeamResults { get; set; }
+        public ICollection<Team> Teams { get; set; }
 
         public ICollection<Game> Games { get; set; }
 
@@ -24,7 +24,7 @@ namespace Baseball.Infrastructure.Data.Entities
 
         public ChampionShip()
         {
-            TeamResults = new List<TeamResult>();
+            Teams = new List<Team>();
             Games = new List<Game>();
         }
     }

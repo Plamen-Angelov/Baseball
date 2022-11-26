@@ -8,7 +8,9 @@
         public const int Team_Color_MaxLength = 20;
 
         public const int ChampionShip_Name_MinLength = 3;
-        public const int ChampionShip_Name_MaxLength = 40;
+        public const int ChampionShip_Name_MaxLength = 40; 
+        public const int ChampionShip_Year_MinValue = 1990;
+        public const int ChampionShip_Year_MaxValue = 2050;
         public const int Stadium_MinLength = 4;
         public const int Stadium_MaxLength = 30;
 
