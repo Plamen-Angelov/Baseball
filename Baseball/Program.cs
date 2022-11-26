@@ -42,6 +42,8 @@ builder.Services.AddScoped<IBatMaterialService, BatMaterialService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPlayerServicece, PlayerService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IChampionShipService, ChampionShipService>();
 
 var app = builder.Build();
 

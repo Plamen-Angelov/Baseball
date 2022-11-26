@@ -25,6 +25,10 @@ namespace Baseball.Infrastructure.Data.Entities
 
         public List<Player> Players { get; set; } = new List<Player>();
 
+        public List<Game> HomeGames { get; set; } = new List<Game>();
+
+        public List<Game> AwayGames { get; set; } = new List<Game>();
+
         public bool IsDeleted { get; set; }
     }
 }

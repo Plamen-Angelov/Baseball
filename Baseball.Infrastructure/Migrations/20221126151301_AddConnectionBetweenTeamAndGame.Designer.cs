@@ -4,6 +4,7 @@ using Baseball.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Baseball.Infrastructure.Migrations
 {
     [DbContext(typeof(BaseballDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221126151301_AddConnectionBetweenTeamAndGame")]
+    partial class AddConnectionBetweenTeamAndGame
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,8 +132,13 @@ namespace Baseball.Infrastructure.Migrations
                     b.Property<int>("AwayTeamRuns")
                         .HasColumnType("int");
 
-                    b.Property<int>("ChampionShipId")
+                    b.Property<int?>("ChampionShipId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ChampionShipName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<int>("HomeTeamErrors")
                         .HasColumnType("int");
@@ -511,11 +518,9 @@ namespace Baseball.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Baseball.Infrastructure.Data.Entities.ChampionShip", "ChampionShip")
+                    b.HasOne("Baseball.Infrastructure.Data.Entities.ChampionShip", null)
                         .WithMany("Games")
-                        .HasForeignKey("ChampionShipId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChampionShipId");
 
                     b.HasOne("Baseball.Infrastructure.Data.Entities.Team", "HomeTeam")
                         .WithMany("HomeGames")
@@ -524,8 +529,6 @@ namespace Baseball.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("AwayTeam");
-
-                    b.Navigation("ChampionShip");
 
                     b.Navigation("HomeTeam");
                 });

@@ -4,7 +4,7 @@ namespace Baseball.Core.Contracts
 {
     public interface ITeamService
     {
-        Task<IEnumerable<TeamViewModel>> GetAll();
+        Task<IEnumerable<TeamViewModel>> GetAllAsync();
 
         Task AddAsync(AddTeamModel model);
 
@@ -15,5 +15,7 @@ namespace Baseball.Core.Contracts
         Task UpdateAsync(int id, EditTeamViewModel model);
 
         Task DeleteAsync(int id);
+
+        Task<List<TeamNameViewModel>> GetAllTeamNamesAsync();
     }
 }

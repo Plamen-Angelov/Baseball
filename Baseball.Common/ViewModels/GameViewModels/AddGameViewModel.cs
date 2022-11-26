@@ -1,53 +1,48 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Baseball.Common.ViewModels.ChampionShipViewModels;
+using Baseball.Common.ViewModels.TeamViewModels;
+using System.ComponentModel.DataAnnotations;
 using static Baseball.Common.Constants;
 
-namespace Baseball.Infrastructure.Data.Entities
+namespace Baseball.Common.ViewModels.GameViewModels
 {
-    public class Game
+    public class AddGameViewModel
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
-        [ForeignKey(nameof(ChampionShip))]
         public int ChampionShipId { get; set; }
 
-        [Required]
-        public ChampionShip ChampionShip { get; set; } = null!;
+        public List<ChampionShipNameViewModel> ChampionShips { get; set; } = null!;
 
         [Required]
-        [ForeignKey(nameof(HomeTeam))]
         public int HomeTeamId { get; set; }
 
         [Required]
-        public Team HomeTeam { get; set; } = null!;
-
-        [Required]
-        [ForeignKey(nameof(AwayTeam))]
         public int AwayTeamId { get; set; }
 
-        [Required]
-        public Team AwayTeam { get; set; } = null!;
+        public List<TeamNameViewModel> Teams { get; set; } = new List<TeamNameViewModel>();
 
         [Required]
-        [MaxLength(Stadium_MaxLength)]
+        [StringLength(Stadium_MaxLength, MinimumLength = Stadium_MinLength)]
         public string Stadium { get; set; } = null!;
 
+        [Range(0, 30)]
         public int InningPlayed { get; set; }
 
+        [Range(0, 100)]
         public int HomeTeamRuns { get; set; }
 
+        [Range(0, 100)]
         public int AwayTeamRuns { get; set; }
 
+        [Range(0, 100)]
         public int HomeTeamHits { get; set; }
 
+        [Range(0, 100)]
         public int AwayTeamHits { get; set; }
 
+        [Range(0, 100)]
         public int HomeTeamErrors { get; set; }
 
+        [Range(0, 100)]
         public int AwayTeamErrors { get; set; }
-
-        public bool IsDeleted { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace Baseball.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var teams = await teamService.GetAll();
+            var teams = await teamService.GetAllAsync();
 
             return View(teams);
         }

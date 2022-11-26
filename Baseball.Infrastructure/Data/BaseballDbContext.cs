@@ -30,6 +30,17 @@ namespace Baseball.Infrastructure.Data
             builder.Entity<BatMaterial>()
                 .HasData(BatMaterialSeed());
 
+            builder.Entity<Game>()
+                .HasOne(g => g.AwayTeam)
+                .WithMany(t => t.AwayGames)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Game>()
+                .HasOne(g => g.HomeTeam)
+                .WithMany(t => t.HomeGames)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             base.OnModelCreating(builder);
         }
 

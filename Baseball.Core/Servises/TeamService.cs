@@ -29,7 +29,7 @@ namespace Baseball.Core.Servises
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TeamViewModel>> GetAll()
+        public async Task<IEnumerable<TeamViewModel>> GetAllAsync()
         {
             var teams = await repository.GetAll<Team>()
                 .Where(t => t.IsDeleted == false)
@@ -118,6 +118,18 @@ namespace Baseball.Core.Servises
             team!.IsDeleted = true;
 
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<List<TeamNameViewModel>> GetAllTeamNamesAsync()
+        {
+            return await repository.GetAll<Team>()
+                .Where(t => t.IsDeleted == false)
+                .Select(t => new TeamNameViewModel()
+                {
+                    Id = t.Id,
+                    Name = t.Name
+                })
+                .ToListAsync();
         }
     }
 }
