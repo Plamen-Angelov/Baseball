@@ -83,7 +83,7 @@
                 @foreach (var game in championShip.Games)
                 {
                     <tr>
-                        <td>@game.ChampionShipName</td>
+                        <td>@game.ChampionShip</td>
                         <td>@game.AwayTeamName</td>
                         <td>@game.HomeTeamName</td>
                         <td>@game.Stadium</td>
@@ -101,9 +101,6 @@
                             <form class="input-group-sm" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id">
                                 <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
                             </form>
-                        </td>
-                        <td>
-                            <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Game" asp-action="Edit" asp-route-id="@game.Id">Add to Championships</a>
                         </td>
                     </tr>
                 }

@@ -27,7 +27,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add()
+        public IActionResult Add()
         {
             var championShip = new AddChampionShipViewModel();
 

@@ -31,5 +31,14 @@
         public const int User_Email_MinLegth = 6;
         public const int User_Email_MaxLegth = 256;
         public const int User_Password_MaxLegth = 25;
+
+        public const int Game_InningsPlayed_MinValue = 0;
+        public const int Game_InningsPlayed_MaxValue = 30;
+        public const int Game_Runs_MinValue = 0;
+        public const int Game_Runs_MaxValue = 100;
+        public const int Game_Hits_MinValue = 0;
+        public const int Game_Hits_MaxValue = 100;
+        public const int Game_Errors_MinValue = 0;
+        public const int Game_Errors_MaxValue = 100;
     }
 }

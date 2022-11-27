@@ -5,8 +5,10 @@ using static Baseball.Common.Constants;
 
 namespace Baseball.Common.ViewModels.GameViewModels
 {
-    public class AddGameViewModel
+    public class EditGameViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         public int ChampionShipId { get; set; }
 

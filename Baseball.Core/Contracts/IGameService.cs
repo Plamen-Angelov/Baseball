@@ -7,5 +7,11 @@ namespace Baseball.Core.Contracts
         Task<IEnumerable<GameViewModel>> GetAllAsync();
 
         Task AddAsync(AddGameViewModel model);
+
+        Task<EditGameViewModel> GetByIdAsync(int id);
+
+        Task UpdateAsync(int id, EditGameViewModel model);
+
+        Task DeleteAsync(int id);
     }
 }

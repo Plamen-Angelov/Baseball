@@ -31,9 +31,22 @@
         @foreach (var game in Model)
         {
             <tr>
-                <td>@game.ChampionShipName</td>
-                <td>@game.AwayTeamName</td>
-                <td>@game.HomeTeamName</td>
+                <td>@game.ChampionShip</td>
+                @if (game.AwayTeamRuns > game.HomeTeamRuns)
+                {
+                    <td><strong>@game.AwayTeamName</strong></td>
+                    <td>@game.HomeTeamName</td>
+                }
+                else if (game.AwayTeamRuns < game.HomeTeamRuns)
+                {
+                    <td>@game.AwayTeamName</td>
+                    <td><strong>@game.HomeTeamName</strong></td>
+                }
+                else
+                {
+                    <td>@game.AwayTeamName</td>
+                    <td>@game.HomeTeamName</td>
+                }
                 <td>@game.Stadium</td>
                 <td>@game.InningPlayed</td>
                 <td>@game.AwayTeamRuns</td>
@@ -49,9 +62,6 @@
                     <form class="input-group-sm" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id">
                         <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
                     </form>
-                </td>
-                <td>
-                    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Game" asp-action="Edit" asp-route-id="@game.Id">Add to Championships</a>
                 </td>
             </tr>
         }

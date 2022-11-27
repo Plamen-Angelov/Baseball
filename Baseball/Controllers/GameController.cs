@@ -54,5 +54,55 @@ namespace Baseball.Controllers
             await gameService.AddAsync(model);
             return RedirectToAction(nameof(All));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var game = await gameService.GetByIdAsync(id);
+
+            if (game == null)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            game.Teams = await teamService.GetAllTeamNamesAsync();
+            game.ChampionShips = await championShipService.GetAllChampionShipNamesAsync();
+
+            return View(game);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditGameViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (id != model.Id)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            if (await gameService.GetByIdAsync(id) == null)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            await gameService.UpdateAsync(id, model);
+            return RedirectToAction(nameof(All));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await gameService.GetByIdAsync(id) == null)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            await gameService.DeleteAsync(id);
+            return RedirectToAction(nameof(All));
+        }
     }
 }

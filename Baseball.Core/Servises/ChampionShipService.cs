@@ -46,7 +46,7 @@ namespace Baseball.Core.Servises
                     .Select(g => new GameViewModel()
                     {
                         Id = g.Id,
-                        ChampionShipName = g.ChampionShip.Name,
+                        ChampionShip = $"{g.ChampionShip.Name} - {g.ChampionShip.Year}",
                         AwayTeamName = g.AwayTeam.Name,
                         Stadium = g.HomeTeam.Name,
                         InningPlayed = g.InningPlayed,
@@ -83,7 +83,7 @@ namespace Baseball.Core.Servises
                 .Select(c => new ChampionShipNameViewModel()
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = $"{c.Name} - {c.Year}"
                 })
                 .ToListAsync();
         }

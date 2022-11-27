@@ -43,9 +43,10 @@ namespace Baseball.Core.Servises
                 .Select(g => new GameViewModel()
                 {
                     Id = g.Id,
-                    ChampionShipName = g.ChampionShip.Name,
+                    ChampionShip = $"{g.ChampionShip.Name} - {g.ChampionShip.Year}",
                     AwayTeamName = g.AwayTeam.Name,
-                    Stadium = g.HomeTeam.Name,
+                    HomeTeamName = g.HomeTeam.Name,
+                    Stadium = g.Stadium,
                     InningPlayed = g.InningPlayed,
                     AwayTeamRuns = g.AwayTeamRuns,
                     HomeTeamRuns = g.HomeTeamRuns,
@@ -55,6 +56,63 @@ namespace Baseball.Core.Servises
                     HomeTeamErrors = g.AwayTeamErrors
                 })
                 .ToListAsync();
+        }
+
+        public async Task<EditGameViewModel> GetByIdAsync(int id)
+        {
+            return await GetById(id)
+                .Select(g => new EditGameViewModel()
+                {
+                    Id = g.Id,
+                    ChampionShipId = g.ChampionShipId,
+                    AwayTeamId = g.AwayTeamId,
+                    HomeTeamId = g.HomeTeamId,
+                    Stadium = g.Stadium,
+                    InningPlayed = g.InningPlayed,
+                    AwayTeamRuns = g.AwayTeamRuns,
+                    HomeTeamRuns = g.HomeTeamRuns,
+                    AwayTeamHits = g.AwayTeamHits,
+                    HomeTeamHits = g.AwayTeamHits,
+                    AwayTeamErrors = g.AwayTeamErrors,
+                    HomeTeamErrors = g.AwayTeamErrors
+                })
+                .SingleAsync();
+        }
+
+        private IQueryable<Game> GetById(int id)
+        {
+            return repository.GetAll<Game>()
+                .Where(g => g.IsDeleted == false && g.Id == id);
+        }
+
+        public async Task UpdateAsync(int id, EditGameViewModel model)
+        {
+            var game = await GetById(id)
+                .FirstOrDefaultAsync();
+
+            game.ChampionShipId = model.ChampionShipId;
+            game.AwayTeamId = model.AwayTeamId;
+            game.HomeTeamId = model.HomeTeamId;
+            game.Stadium = model.Stadium;
+            game.InningPlayed = model.InningPlayed;
+            game.AwayTeamRuns = model.AwayTeamRuns;
+            game.HomeTeamRuns = model.HomeTeamRuns;
+            game.AwayTeamHits = model.AwayTeamHits;
+            game.HomeTeamHits = game.HomeTeamHits;
+            game.AwayTeamErrors = model.AwayTeamErrors;
+            game.HomeTeamErrors = game.AwayTeamErrors;
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var game = await GetById(id)
+                .FirstOrDefaultAsync();
+
+            game.IsDeleted = true;
+
+            await repository.SaveChangesAsync();
         }
     }
 }

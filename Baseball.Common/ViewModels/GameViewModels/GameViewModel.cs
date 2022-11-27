@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string ChampionShipName { get; set; } = null!;
+        public string ChampionShip { get; set; } = null!;
 
         public string HomeTeamName { get; set; } = null!;
 
