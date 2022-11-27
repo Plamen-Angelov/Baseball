@@ -11,13 +11,10 @@ namespace Baseball.Core.Servises
     public class ChampionShipService : IChampionShipService
     {
         private readonly IRepository repository;
-        private readonly IGameService gameService;
 
-        public ChampionShipService(IRepository repository,
-            IGameService gameService)
+        public ChampionShipService(IRepository repository)
         {
             this.repository = repository;
-            this.gameService = gameService;
         }
 
         public async Task AddAsync(AddChampionShipViewModel model)
@@ -34,13 +31,25 @@ namespace Baseball.Core.Servises
 
         public async Task<List<ChampionShipViewModel>> GetAllAsync()
         {
-            var championShips = await repository.GetAll<ChampionShip>()
+            return await repository.GetAll<ChampionShip>()
                 .Where(c => c.IsDeleted == false)
                 .Select(c => new ChampionShipViewModel()
                 {
                     Id = c.Id,
                     Name = c.Name,
-                    Year = c.Year,
+                    Year = c.Year
+                })
+                .OrderByDescending(c => c.Year)
+                .ToListAsync();
+        }
+
+        public async Task<ChampionShipDetailsViewModel> GetDetailsAsync(int id)
+        {
+            return await GetById(id)
+                .Select(c => new ChampionShipDetailsViewModel()
+                {
+                    Id = c.Id,
+                    Name = $"{c.Name} - {c.Year}",
                     Games = c.Games
                     .Where(g => g.IsDeleted == false)
                     .Select(g => new GameViewModel()
@@ -68,12 +77,7 @@ namespace Baseball.Core.Servises
                     .ThenBy(t => t.LoseGames)
                     .ToList()
                 })
-                .ToListAsync();
-
-                return championShips
-                        .OrderByDescending(c => c.Year)
-                        .ThenByDescending(c => c.Games.Count)
-                        .ToList();
+                .SingleAsync();
         }
 
         public async Task<List<ChampionShipNameViewModel>> GetAllChampionShipNamesAsync()
@@ -117,6 +121,16 @@ namespace Baseball.Core.Servises
 
             championShip.Name = model.Name;
             championShip.Year = model.Year;
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var championShip = await GetById(id)
+                .FirstOrDefaultAsync();
+
+            championShip.IsDeleted = true;
 
             await repository.SaveChangesAsync();
         }

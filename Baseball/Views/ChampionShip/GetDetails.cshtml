@@ -1,0 +1,92 @@
+﻿@model ChampionShipDetailsViewModel
+
+@{
+    ViewBag.Title = @Model.Name;
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+@if (Model.Teams.Any())
+{
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col"><h5>Rank</h5></th>
+                <th scope="col"><h5>Team</h5></th>
+                <th scope="col"><h5>Wins</h5></th>
+                <th scope="col">Loses</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Teams.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model.Teams[i].Name</td>
+                    <td>@Model.Teams[i].WinGames</td>
+                    <td>@Model.Teams[i].LoseGames</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Games.Any())
+{
+    <h5 class="text-center">Games</h5>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Championship</th>
+                <th scope="col">Away Team</th>
+                <th scope="col">Home Team</th>
+                <th scope="col">Stadium</th>
+                <th scope="col">Innings</th>
+                <th scope="col">AT Runs</th>
+                <th scope="col">HT Runs</th>
+                <th scope="col">AT Hits</th>
+                <th scope="col">HT Hits</th>
+                <th scope="col">AT Errors</th>
+                <th scope="col">HT Errors</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in Model.Games)
+            {
+                <tr>
+                    <td>@game.ChampionShip</td>
+                    <td>@game.AwayTeamName</td>
+                    <td>@game.HomeTeamName</td>
+                    <td>@game.Stadium</td>
+                    <td>@game.InningPlayed</td>
+                    <td>@game.AwayTeamRuns</td>
+                    <td>@game.HomeTeamRuns</td>
+                    <td>@game.AwayTeamHits</td>
+                    <td>@game.HomeTeamHits</td>
+                    <td>@game.AwayTeamErrors</td>
+                    <td>@game.HomeTeamErrors</td>
+                    <td>
+                        <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Game" asp-action="Edit" asp-route-id="@game.Id">Edit</a>
+                    </td>
+                    <td>
+                        <form class="input-group-sm" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id">
+                            <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (!Model.Teams.Any() && !Model.Games.Any())
+{
+    <h6 class="text-center">No information is added for this championship</h6>
+}
+
+
+

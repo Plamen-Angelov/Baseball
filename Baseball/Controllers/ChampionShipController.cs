@@ -27,6 +27,18 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetDetails(int id)
+        {
+            if (await championShipService.GetByIdAsync(id) == null)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            var championShipDetails = await championShipService.GetDetailsAsync(id);
+            return View(championShipDetails);
+        }
+
+        [HttpGet]
         public IActionResult Add()
         {
             var championShip = new AddChampionShipViewModel();
@@ -76,6 +88,18 @@ namespace Baseball.Controllers
             {
                 return RedirectToAction(nameof(All));
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await championShipService.GetByIdAsync(id) == null)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            await championShipService.DeleteAsync(id);
+            return RedirectToAction(nameof(All));
         }
     }
 }

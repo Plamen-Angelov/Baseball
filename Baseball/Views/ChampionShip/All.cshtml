@@ -7,19 +7,23 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="ChampionShip" asp-action="Add">Add Championship</a>
 
-@foreach (var championShip in Model)
-{
-    <table class="table">
-        <thead class="thead-light">
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Championship</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var championShip in Model)
+        {
             <tr>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><h5>@championShip.Name  - @championShip.Year</h5></td>
+                <td>@championShip.Name  - @championShip.Year</td>
+                <td>
+                    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="ChampionShip" asp-action="GetDetails" asp-route-id="@championShip.Id">Details</a>
+                </td>
                 <td>
                     <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="ChampionShip" asp-action="Edit" asp-route-id="@championShip.Id">Edit</a>
                 </td>
@@ -29,85 +33,6 @@
                     </form>
                 </td>
             </tr>
-        </tbody>
-    </table>
-    @if (championShip.Teams.Any())
-    {
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col"><h5>Rank</h5></th>
-                    <th scope="col"><h5>Team</h5></th>
-                    <th scope="col"><h5>Wins</h5></th>
-                    <th scope="col">Loses</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < championShip.Teams.Count; i++)
-                {
-                    <tr>
-                        <td>@(i + 1)</td>
-                        <td>@championShip.Teams[i].Name</td>
-                        <td>@championShip.Teams[i].WinGames</td>
-                        <td>@championShip.Teams[i].LoseGames</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-
-    @if (championShip.Games.Any())
-    {
-        <h5 class="text-center">Games</h5>
-
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col">Championship</th>
-                    <th scope="col">Away Team</th>
-                    <th scope="col">Home Team</th>
-                    <th scope="col">Stadium</th>
-                    <th scope="col">Innings</th>
-                    <th scope="col">AT Runs</th>
-                    <th scope="col">HT Runs</th>
-                    <th scope="col">AT Hits</th>
-                    <th scope="col">HT Hits</th>
-                    <th scope="col">AT Errors</th>
-                    <th scope="col">HT Errors</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var game in championShip.Games)
-                {
-                    <tr>
-                        <td>@game.ChampionShip</td>
-                        <td>@game.AwayTeamName</td>
-                        <td>@game.HomeTeamName</td>
-                        <td>@game.Stadium</td>
-                        <td>@game.InningPlayed</td>
-                        <td>@game.AwayTeamRuns</td>
-                        <td>@game.HomeTeamRuns</td>
-                        <td>@game.AwayTeamHits</td>
-                        <td>@game.HomeTeamHits</td>
-                        <td>@game.AwayTeamErrors</td>
-                        <td>@game.HomeTeamErrors</td>
-                        <td>
-                            <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Game" asp-action="Edit" asp-route-id="@game.Id">Edit</a>
-                        </td>
-                        <td>
-                            <form class="input-group-sm" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id">
-                                <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-}
-
-
-
+        }
+    </tbody>
+</table>
