@@ -40,6 +40,11 @@ namespace Baseball.Infrastructure.Data.Entities
 
         public int AwayTeamRuns { get; set; }
 
+        [ForeignKey(nameof(Winner))]
+        public int? WinnerId { get; set; }
+
+        public Team? Winner { get; set; }
+
         public int HomeTeamHits { get; set; }
 
         public int AwayTeamHits { get; set; }

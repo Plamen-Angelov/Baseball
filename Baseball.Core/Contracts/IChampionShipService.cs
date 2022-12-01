@@ -1,4 +1,5 @@
 ﻿using Baseball.Common.ViewModels.ChampionShipViewModels;
+using Baseball.Infrastructure.Data.Entities;
 
 namespace Baseball.Core.Contracts
 {
@@ -13,6 +14,8 @@ namespace Baseball.Core.Contracts
         Task AddAsync(AddChampionShipViewModel model);
 
         Task<EditChampionShipViewModel> GetByIdAsync(int id);
+
+        Task<ChampionShip> GetEntityByIdAsync(int id);
 
         Task UpdateAsync(int id, EditChampionShipViewModel model);
 

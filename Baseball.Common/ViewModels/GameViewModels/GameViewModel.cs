@@ -18,6 +18,8 @@
 
         public int AwayTeamRuns { get; set; }
 
+        public int? WinnerId { get; set; }
+
         public int HomeTeamHits { get; set; }
 
         public int AwayTeamHits { get; set; }

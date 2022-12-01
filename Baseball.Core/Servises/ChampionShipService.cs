@@ -11,10 +11,12 @@ namespace Baseball.Core.Servises
     public class ChampionShipService : IChampionShipService
     {
         private readonly IRepository repository;
+        private readonly ITeamService teamService;
 
-        public ChampionShipService(IRepository repository)
+        public ChampionShipService(IRepository repository, ITeamService teamService)
         {
             this.repository = repository;
+            this.teamService = teamService;
         }
 
         public async Task AddAsync(AddChampionShipViewModel model)
@@ -45,7 +47,7 @@ namespace Baseball.Core.Servises
 
         public async Task<ChampionShipDetailsViewModel> GetDetailsAsync(int id)
         {
-            return await GetById(id)
+            var championShipDetails = await GetById(id)
                 .Select(c => new ChampionShipDetailsViewModel()
                 {
                     Id = c.Id,
@@ -57,7 +59,8 @@ namespace Baseball.Core.Servises
                         Id = g.Id,
                         ChampionShip = $"{g.ChampionShip.Name} - {g.ChampionShip.Year}",
                         AwayTeamName = g.AwayTeam.Name,
-                        Stadium = g.HomeTeam.Name,
+                        HomeTeamName = g.HomeTeam.Name,
+                        Stadium = g.Stadium,
                         InningPlayed = g.InningPlayed,
                         AwayTeamRuns = g.AwayTeamRuns,
                         HomeTeamRuns = g.HomeTeamRuns,
@@ -67,17 +70,28 @@ namespace Baseball.Core.Servises
                         HomeTeamErrors = g.AwayTeamErrors
                     }).ToList(),
                     Teams = c.Teams
+                    .Where(t => t.IsDeleted == false)
                     .Select(t => new TeamViewModel()
                     {
-                        Name = t.Name,
-                        WinGames = t.WinGames,
-                        LoseGames = t.loseGames
+                        Id = t.Id,
+                        Name = t.Name
                     })
-                    .OrderByDescending(t => t.WinGames)
-                    .ThenBy(t => t.LoseGames)
                     .ToList()
                 })
                 .SingleAsync();
+
+            foreach (var team in championShipDetails.Teams)
+            {
+                var teamEntity = await teamService.GetEntityByIdAsync(team.Id);
+                team.WinGames = await teamService.GetWinsAsync(teamEntity);
+                team.LoseGames = await teamService.GetLosesAsync(teamEntity);
+            }
+
+            championShipDetails.Teams
+                .OrderByDescending(t => t.WinGames)
+                .ThenBy(t => t.LoseGames);
+
+            return championShipDetails;
         }
 
         public async Task<List<ChampionShipNameViewModel>> GetAllChampionShipNamesAsync()
@@ -127,12 +141,19 @@ namespace Baseball.Core.Servises
 
         public async Task DeleteAsync(int id)
         {
-            var championShip = await GetById(id)
-                .FirstOrDefaultAsync();
+            var championShip = await GetEntityByIdAsync(id);
 
             championShip.IsDeleted = true;
 
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<ChampionShip> GetEntityByIdAsync(int id)
+        {
+            return await GetById(id)
+                .Include(c => c.Teams)
+                .Include(c => c.Games)
+                .FirstOrDefaultAsync();
         }
     }
 }

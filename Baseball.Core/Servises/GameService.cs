@@ -9,10 +9,16 @@ namespace Baseball.Core.Servises
     public class GameService : IGameService
     {
         private readonly IRepository repository;
+        private readonly IChampionShipService championShipService;
+        private readonly ITeamService teamService;
 
-        public GameService(IRepository repository)
+        public GameService(IRepository repository,
+            IChampionShipService championShipService,
+            ITeamService teamService)
         {
             this.repository = repository;
+            this.championShipService = championShipService;
+            this.teamService = teamService;
         }
 
         public async Task AddAsync(AddGameViewModel model)
@@ -32,8 +38,59 @@ namespace Baseball.Core.Servises
                 HomeTeamErrors = model.HomeTeamErrors
             };
 
+            if (model.AwayTeamRuns > model.HomeTeamRuns)
+            {
+                game.WinnerId = model.AwayTeamId;
+            }
+            else if (model.AwayTeamRuns < model.HomeTeamRuns)
+            {
+                game.WinnerId = model.HomeTeamId; ;
+            }
+
+            await AddTeamsToChampionShipIfNotThere(model.AwayTeamId, model.HomeTeamId, model.ChampionShipId);
+            SetWinner(game);
+            await AddGameToTeams(game);
+
             await repository.AddAsync(game);
             await repository.SaveChangesAsync();
+        }
+
+        private void SetWinner(Game game)
+        {
+            if (game.HomeTeamRuns > game.AwayTeamRuns)
+            {
+                game.Winner = game.HomeTeam;
+            }
+            else if (game.HomeTeamHits < game.AwayTeamHits)
+            {
+                game.Winner = game.AwayTeam;
+            }
+        }
+
+        private async Task AddTeamsToChampionShipIfNotThere(int awayTeamId, int homeTeamId, int championShipId)
+        {
+            var awayTeam = await teamService.GetEntityByIdAsync(awayTeamId);
+            var homeTeam = await teamService.GetEntityByIdAsync(homeTeamId);
+            var championShip = await championShipService.GetEntityByIdAsync(championShipId);
+
+            if (!championShip.Teams.Any(t => t.Name == awayTeam.Name))
+            {
+                championShip.Teams.Add(awayTeam);
+            }
+
+            if (!championShip.Teams.Any(t => t.Name == homeTeam.Name))
+            {
+                championShip.Teams.Add(homeTeam);
+            }
+        }
+
+        private async Task AddGameToTeams(Game game)
+        {
+            var homeTeam = await teamService.GetEntityByIdAsync(game.HomeTeamId);
+            homeTeam.HomeGames.Add(game);
+
+            var awayTeam = await teamService.GetEntityByIdAsync(game.AwayTeamId);
+            awayTeam.AwayGames.Add(game);
         }
 
         public async Task<IEnumerable<GameViewModel>> GetAllAsync()
@@ -53,7 +110,8 @@ namespace Baseball.Core.Servises
                     AwayTeamHits = g.AwayTeamHits,
                     HomeTeamHits = g.AwayTeamHits,
                     AwayTeamErrors = g.AwayTeamErrors,
-                    HomeTeamErrors = g.AwayTeamErrors
+                    HomeTeamErrors = g.AwayTeamErrors,
+                    WinnerId = g.WinnerId
                 })
                 .ToListAsync();
         }
@@ -102,15 +160,50 @@ namespace Baseball.Core.Servises
             game.AwayTeamErrors = model.AwayTeamErrors;
             game.HomeTeamErrors = game.AwayTeamErrors;
 
+            await AddTeamsToChampionShipIfNotThere(model.AwayTeamId, model.HomeTeamId, model.ChampionShipId);
+            SetWinner(game);
+
             await repository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
             var game = await GetById(id)
+                .Include(g => g.ChampionShip)
+                .ThenInclude(c => c.Games)
+                .ThenInclude(g => g.AwayTeam)
+                .Include(g => g.ChampionShip)
+                .ThenInclude(c => c.Games)
+                .ThenInclude(g => g.HomeTeam)
+                .Include(g => g.ChampionShip)
+                .ThenInclude(c => c.Teams)
                 .FirstOrDefaultAsync();
 
             game.IsDeleted = true;
+
+            var championShip = game.ChampionShip;
+
+            bool isAwayTeamInAnotherGame = championShip.Games
+                                         .Any(g => g.IsDeleted == false
+                                              && g != game
+                                              && (g.AwayTeam == game.AwayTeam
+                                                  || g.HomeTeam == game.AwayTeam));
+
+            if (!isAwayTeamInAnotherGame)
+            {
+                championShip.Teams.Remove(game.AwayTeam);
+            }
+
+            bool isHomeTeamInAnotherGame = championShip.Games
+                                         .Any(g => g.IsDeleted == false
+                                              && g != game
+                                              && (g.AwayTeam == game.HomeTeam
+                                                  || g.HomeTeam == game.HomeTeam));
+
+            if (!isHomeTeamInAnotherGame)
+            {
+                championShip.Teams.Remove(game.HomeTeam);
+            }
 
             await repository.SaveChangesAsync();
         }

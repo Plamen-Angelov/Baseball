@@ -1,4 +1,5 @@
-﻿using Baseball.Common.ViewModels.PlayerViewModels;
+﻿using Baseball.Common.ViewModels.GameViewModels;
+using Baseball.Common.ViewModels.PlayerViewModels;
 using Baseball.Common.ViewModels.TeamViewModels;
 using Baseball.Core.Contracts;
 using Baseball.Infrastructure.Data.Entities;
@@ -32,17 +33,27 @@ namespace Baseball.Core.Servises
         public async Task<IEnumerable<TeamViewModel>> GetAllAsync()
         {
             var teams = await repository.GetAll<Team>()
+                .Include(x => x.AwayGames)
+                .Include(x => x.HomeGames)
+                .Include(x => x.Players)
+                .Include(x => x.ChampionShips)
                 .Where(t => t.IsDeleted == false)
-                .Select(b => new TeamViewModel()
+                .Select(t => new TeamViewModel()
                 {
-                    Id = b.Id,
-                    Name = b.Name,
-                    WinGames = b.WinGames,
-                    LoseGames = b.loseGames
+                    Id = t.Id,
+                    Name = t.Name
                 })
-                .OrderByDescending(t => t.WinGames)
-                .ThenBy(t => t.LoseGames)
                 .ToListAsync();
+
+            foreach (var team in teams)
+            {
+                team.WinGames = await GetWinsAsync(await GetEntityByIdAsync(team.Id));
+                team.LoseGames = await GetLosesAsync(await GetEntityByIdAsync(team.Id));
+            }
+
+            teams
+              .OrderByDescending(t => t.WinGames)
+              .ThenBy(t => t.LoseGames);
 
             return teams;
         }
@@ -97,12 +108,15 @@ namespace Baseball.Core.Servises
                 return null;
             }
 
+            team.WinGames = await GetWinsAsync(await GetEntityByIdAsync(id));
+            team.loseGames = await GetLosesAsync(await GetEntityByIdAsync(id));
+
             return team;
         }
 
         public async Task UpdateAsync(int id, EditTeamViewModel model)
         {
-            var team = await  GetById(id).FirstOrDefaultAsync();
+            var team = await GetEntityByIdAsync(id);
 
             team!.Name = model.Name;
             team.HomeColor = model.HomeColor;
@@ -113,7 +127,7 @@ namespace Baseball.Core.Servises
 
         public async Task DeleteAsync(int id)
         {
-            var team = await GetById(id).FirstOrDefaultAsync();
+            var team = await GetEntityByIdAsync(id);
 
             team!.IsDeleted = true;
 
@@ -130,6 +144,42 @@ namespace Baseball.Core.Servises
                     Name = t.Name
                 })
                 .ToListAsync();
+        }
+
+        public async Task<Team> GetEntityByIdAsync(int id)
+        {
+            return await GetById(id)
+                .Include(x => x.HomeGames)
+                .Include(x => x.AwayGames)
+                .Include(x => x.ChampionShips)
+                .Include(x => x.Players)
+                .FirstOrDefaultAsync();
+        }
+
+        private async Task<List<Game>> GetAllTeamGames(Team team)
+        {
+            return await repository.GetAll<Game>()
+                .Include(g => g.Winner)
+                .Where(g => g.IsDeleted == false && (g.HomeTeam == team || g.AwayTeam == team))
+                .ToListAsync();
+        }
+
+        public async Task<int> GetWinsAsync(Team team)
+        {
+            var games = await GetAllTeamGames(team);
+
+            return games
+                .Where(g => g.Winner == team)
+                .Count();
+        }
+
+        public async Task<int> GetLosesAsync(Team team)
+        {
+            var games = await GetAllTeamGames(team);
+
+            return games
+                .Where(g => g.Winner != team && g.Winner != null)
+                .Count();
         }
     }
 }

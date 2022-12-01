@@ -59,8 +59,21 @@
             {
                 <tr>
                     <td>@game.ChampionShip</td>
-                    <td>@game.AwayTeamName</td>
-                    <td>@game.HomeTeamName</td>
+                    @if (game.AwayTeamRuns > game.HomeTeamRuns)
+                    {
+                        <td><strong>@game.AwayTeamName</strong></td>
+                        <td>@game.HomeTeamName</td>
+                    }
+                    else if (game.AwayTeamRuns < game.HomeTeamRuns)
+                    {
+                        <td>@game.AwayTeamName</td>
+                        <td><strong>@game.HomeTeamName</strong></td>
+                    }
+                    else
+                    {
+                        <td>@game.AwayTeamName</td>
+                        <td>@game.HomeTeamName</td>
+                    }
                     <td>@game.Stadium</td>
                     <td>@game.InningPlayed</td>
                     <td>@game.AwayTeamRuns</td>

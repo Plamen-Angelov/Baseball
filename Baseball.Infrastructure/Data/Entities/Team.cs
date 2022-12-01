@@ -29,6 +29,8 @@ namespace Baseball.Infrastructure.Data.Entities
 
         public List<Game> AwayGames { get; set; } = new List<Game>();
 
+        public List<ChampionShip> ChampionShips { get; set; } = new List<ChampionShip>();
+
         public bool IsDeleted { get; set; }
     }
 }

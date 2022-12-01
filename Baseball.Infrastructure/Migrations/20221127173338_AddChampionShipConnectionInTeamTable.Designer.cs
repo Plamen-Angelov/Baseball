@@ -4,6 +4,7 @@ using Baseball.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Baseball.Infrastructure.Migrations
 {
     [DbContext(typeof(BaseballDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221127173338_AddChampionShipConnectionInTeamTable")]
+    partial class AddChampionShipConnectionInTeamTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +50,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasIndex("BatMaterialId");
 
-                    b.ToTable("Bats", (string)null);
+                    b.ToTable("Bats");
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.BatMaterial", b =>
@@ -69,7 +71,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BatMaterials", (string)null);
+                    b.ToTable("BatMaterials");
 
                     b.HasData(
                         new
@@ -107,7 +109,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChampionShips", (string)null);
+                    b.ToTable("ChampionShips");
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Game", b =>
@@ -156,9 +158,6 @@ namespace Baseball.Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("WinnerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AwayTeamId");
@@ -167,9 +166,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasIndex("HomeTeamId");
 
-                    b.HasIndex("WinnerId");
-
-                    b.ToTable("Games", (string)null);
+                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Player", b =>
@@ -220,7 +217,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Players", (string)null);
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Team", b =>
@@ -257,7 +254,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("ChampionShipTeam", b =>
@@ -272,7 +269,7 @@ namespace Baseball.Infrastructure.Migrations
 
                     b.HasIndex("TeamsId");
 
-                    b.ToTable("ChampionShipTeam", (string)null);
+                    b.ToTable("ChampionShipTeam");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -508,17 +505,11 @@ namespace Baseball.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Baseball.Infrastructure.Data.Entities.Team", "Winner")
-                        .WithMany()
-                        .HasForeignKey("WinnerId");
-
                     b.Navigation("AwayTeam");
 
                     b.Navigation("ChampionShip");
 
                     b.Navigation("HomeTeam");
-
-                    b.Navigation("Winner");
                 });
 
             modelBuilder.Entity("Baseball.Infrastructure.Data.Entities.Player", b =>
