@@ -1,5 +1,4 @@
 ﻿using Baseball.Common.ViewModels.PlayerViewModels;
-using Baseball.Infrastructure.Data.Entities;
 
 namespace Baseball.Core.Contracts
 {
@@ -11,8 +10,12 @@ namespace Baseball.Core.Contracts
 
         Task<AddPlayerViewModel> GetByIdAsync(int id);
 
+        Task<PlayerViewModel> GetPlayerByIdAsync(int id);
+
         Task UpdateAsync(int id, AddPlayerViewModel model);
 
         Task DeleteAsync(int id);
+
+        Task AddToTeamAsync(int playerId, int teamId);
     }
 }

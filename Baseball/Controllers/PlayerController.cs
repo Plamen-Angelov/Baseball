@@ -1,4 +1,5 @@
 ﻿using Baseball.Common.ViewModels.PlayerViewModels;
+using Baseball.Common.ViewModels.TeamViewModels;
 using Baseball.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,13 +11,16 @@ namespace Baseball.Controllers
     {
         private readonly IPlayerServicece playerService;
         private readonly IBatService batService;
+        private readonly ITeamService teamService;
 
         public PlayerController(
             IPlayerServicece playerService, 
-            IBatService batService)
+            IBatService batService,
+            ITeamService teamService)
         {
             this.playerService = playerService;
             this.batService = batService;
+            this.teamService = teamService;
         }
 
         public IActionResult Index()
@@ -114,6 +118,7 @@ namespace Baseball.Controllers
             
         }
 
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             if (!(User.IsInRole("Player") || User.IsInRole("Coach")))
@@ -122,6 +127,31 @@ namespace Baseball.Controllers
             }
 
             await playerService.DeleteAsync(id);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddToTeam(int id)
+        {
+            var model = new AddPlayerToTeamViewModel()
+            {
+                Player = await playerService.GetPlayerByIdAsync(id),
+                Teams = await teamService.GetAllTeamNamesAsync()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToTeam(int id, AddPlayerToTeamViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await playerService.AddToTeamAsync(id, model.TeamId);
 
             return RedirectToAction(nameof(All));
         }

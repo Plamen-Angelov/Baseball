@@ -17,5 +17,7 @@
         public string ThrowHand { get; set; } = null!;
 
         public string BattingAverage { get; set; } = null!;
+
+        public string? TeamName { get; set; }
     }
 }
