@@ -12,7 +12,7 @@
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <form asp-action="Edit" method="post">
             <div class="mb-3">
-                <label asp-for="@Model.ChampionShipId" class="form-label">Championsip</label>
+                <label asp-for="@Model.ChampionShipId" class="form-label"><strong>Championsip</strong></label>
                 <select asp-for="@Model.ChampionShipId" class="form-control">
                     @foreach (var championShip in Model.ChampionShips)
                     {
@@ -22,7 +22,7 @@
                 <span asp-validation-for="ChampionShipId" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.AwayTeamId" class="form-label">Away Team Name</label>
+                <label asp-for="@Model.AwayTeamId" class="form-label"><strong>Away Team Name</strong></label>
                 <select asp-for="@Model.AwayTeamId" class="form-control">
                     @foreach (var team in Model.Teams)
                     {
@@ -32,7 +32,7 @@
                 <span asp-validation-for="AwayTeamId" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.HomeTeamId" class="form-label">Home Team Name</label>
+                <label asp-for="@Model.HomeTeamId" class="form-label"><strong>Home Team Name</strong></label>
                 <select asp-for="@Model.HomeTeamId" class="form-control">
                     @foreach (var team in Model.Teams)
                     {
@@ -42,42 +42,42 @@
                 <span asp-validation-for="HomeTeamId" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.Stadium" class="form-label">Stadium</label>
+                <label asp-for="@Model.Stadium" class="form-label"><strong>Stadium</strong></label>
                 <input asp-for="@Model.Stadium" class="form-control" aria-required="true" />
                 <span asp-validation-for="Stadium" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.InningPlayed" class="form-label">Innings played</label>
+                <label asp-for="@Model.InningPlayed" class="form-label"><strong>Innings played</strong></label>
                 <input asp-for="@Model.InningPlayed" class="form-control" aria-required="true" />
                 <span asp-validation-for="InningPlayed" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.AwayTeamRuns" class="form-label">Away Team Runs</label>
+                <label asp-for="@Model.AwayTeamRuns" class="form-label"><strong>Away Team Runs</strong></label>
                 <input asp-for="@Model.AwayTeamRuns" class="form-control" aria-required="true" />
                 <span asp-validation-for="AwayTeamRuns" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.HomeTeamRuns" class="form-label">Home Team Runs</label>
+                <label asp-for="@Model.HomeTeamRuns" class="form-label"><strong>Home Team Runs</strong></label>
                 <input asp-for="@Model.HomeTeamRuns" class="form-control" aria-required="true" />
                 <span asp-validation-for="HomeTeamRuns" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.AwayTeamHits" class="form-label">Away Team Hits</label>
+                <label asp-for="@Model.AwayTeamHits" class="form-label"><strong>Away Team Hits</strong></label>
                 <input asp-for="@Model.AwayTeamHits" class="form-control" aria-required="true" />
                 <span asp-validation-for="AwayTeamHits" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.HomeTeamHits" class="form-label">Home Team Hits</label>
+                <label asp-for="@Model.HomeTeamHits" class="form-label"><strong>Home Team Hits</strong></label>
                 <input asp-for="@Model.HomeTeamHits" class="form-control" aria-required="true" />
                 <span asp-validation-for="HomeTeamHits" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.AwayTeamErrors" class="form-label">Away Team Errors</label>
+                <label asp-for="@Model.AwayTeamErrors" class="form-label"><strong>Away Team Errors</strong></label>
                 <input asp-for="@Model.AwayTeamErrors" class="form-control" aria-required="true" />
                 <span asp-validation-for="AwayTeamErrors" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.AwayTeamErrors" class="form-label">Away Team Errors</label>
+                <label asp-for="@Model.AwayTeamErrors" class="form-label"><strong>Away Team Errors</strong></label>
                 <input asp-for="@Model.AwayTeamErrors" class="form-control" aria-required="true" />
                 <span asp-validation-for="AwayTeamErrors" class="text-danger"></span>
             </div>
