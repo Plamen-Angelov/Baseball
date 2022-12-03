@@ -37,6 +37,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public IActionResult Add()
         {
             var model = new AddPlayerViewModel()
@@ -48,6 +49,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Add(AddPlayerViewModel model)
         {
             if (!ModelState.IsValid)
@@ -68,6 +70,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id)
         {
             var player = await playerService.GetByIdAsync(id);
@@ -88,6 +91,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id, AddPlayerViewModel model)
         {
             if (!ModelState.IsValid)
@@ -119,6 +123,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Delete(int id)
         {
             if (!(User.IsInRole("Player") || User.IsInRole("Coach")))
@@ -132,6 +137,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> AddToTeam(int id)
         {
             var model = new AddPlayerToTeamViewModel()
@@ -144,6 +150,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> AddToTeam(int id, AddPlayerToTeamViewModel model)
         {
             if (!ModelState.IsValid)
@@ -157,6 +164,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> MakePlayerFreeAgent(int id)
         {
             try

@@ -1,9 +1,11 @@
 ﻿using Baseball.Common.ViewModels.GameViewModels;
 using Baseball.Core.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Baseball.Controllers
 {
+    [Authorize]
     public class GameController : Controller
     {
         private readonly IGameService gameService;
@@ -33,6 +35,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Add()
         {
             var model = new AddGameViewModel();
@@ -43,6 +46,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Add(AddGameViewModel model)
         {
 
@@ -56,6 +60,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id)
         {
             var game = await gameService.GetByIdAsync(id);
@@ -72,6 +77,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id, EditGameViewModel model)
         {
             if (!ModelState.IsValid)
@@ -94,6 +100,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Delete(int id)
         {
             if (await gameService.GetByIdAsync(id) == null)

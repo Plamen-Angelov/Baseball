@@ -27,6 +27,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public IActionResult Add()
         {
             var model = new AddBatViewModel()
@@ -38,6 +39,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Add(AddBatViewModel model)
         {
             if (!ModelState.IsValid)
@@ -58,6 +60,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public IActionResult Edit(int id)
         {
             try
@@ -74,6 +77,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id, AddBatViewModel model)
         {
             try
@@ -95,6 +99,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Delete(int id)
         {
             await batService.DeleteAsync(id);

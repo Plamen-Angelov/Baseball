@@ -5,8 +5,10 @@
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
-<a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="Add">Add new Player</a>
-
+@if (User.IsInRole("Coach") || User.IsInRole("Playr"))
+{
+    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="Add">Add new Player</a>
+}
 
 <table class="table">
     <thead class="thead-light">
@@ -36,23 +38,32 @@
                 <td>@player.BattingAverage</td>
                 @if (player.TeamName == null)
                 {
-                    <td>
-                        <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="AddToTeam" asp-route-id="@player.Id">Add to team</a>
-                    </td>
+                    if (User.IsInRole("Coach") || User.IsInRole("Playr"))
+                    {
+                        <td>
+                            <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="AddToTeam" asp-route-id="@player.Id">Add to team</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>Free agent</td>
+                    }
                 }
                 else
                 {
                     <td>@player.TeamName</td>
                 }
-                <td>
-                    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="Edit" asp-route-id="@player.Id">Edit</a>
-                </td>
-                <td>
-                    <form class="input-group-sm" asp-controller="Player" asp-action="Delete" asp-route-id="@player.Id">
-                        <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
-                    </form>
-                </td>
-                
+                @if (User.IsInRole("Coach") || User.IsInRole("Playr"))
+                {
+                    <td>
+                        <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="Edit" asp-route-id="@player.Id">Edit</a>
+                    </td>
+                    <td>
+                        <form class="input-group-sm" asp-controller="Player" asp-action="Delete" asp-route-id="@player.Id">
+                            <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
+                        </form>
+                    </td>
+                }
             </tr>
         }
     </tbody>

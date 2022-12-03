@@ -1,9 +1,11 @@
 ﻿using Baseball.Common.ViewModels.ChampionShipViewModels;
 using Baseball.Core.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Baseball.Controllers
 {
+    [Authorize]
     public class ChampionShipController : Controller
     {
         private readonly IChampionShipService championShipService;
@@ -39,6 +41,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public IActionResult Add()
         {
             var championShip = new AddChampionShipViewModel();
@@ -47,6 +50,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Add(AddChampionShipViewModel model)
         {
             if (!ModelState.IsValid)
@@ -59,6 +63,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id)
         {
             var championShip = await championShipService.GetByIdAsync(id);
@@ -67,6 +72,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id, EditChampionShipViewModel model)
         {
             if (!ModelState.IsValid)
@@ -91,6 +97,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Delete(int id)
         {
             if (await championShipService.GetByIdAsync(id) == null)
@@ -103,6 +110,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetHomePageAll()
         {
             var championShips = await championShipService.GetHomePageAllAsync();

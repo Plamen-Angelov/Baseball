@@ -1,9 +1,11 @@
 ﻿using Baseball.Common.ViewModels.TeamViewModels;
 using Baseball.Core.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Baseball.Controllers
 {
+    [Authorize]
     public class TeamController : Controller
     {
         private readonly ITeamService teamService;
@@ -27,6 +29,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public IActionResult Add()
         {
             var model = new AddTeamModel();
@@ -35,6 +38,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Add(AddTeamModel model)
         {
             if (!ModelState.IsValid)
@@ -54,6 +58,7 @@ namespace Baseball.Controllers
             };
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetDetails(int id)
         {
             var teamDetails = await teamService.GetDetailsAsync(id);
@@ -68,6 +73,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id)
         {
             var team = await teamService.GetByIdAsync(id);
@@ -81,6 +87,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id, EditTeamViewModel model)
         {
             if (id != model.Id)
@@ -99,6 +106,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Delete(int id)
         {
             if (await teamService.GetByIdAsync(id) == null)

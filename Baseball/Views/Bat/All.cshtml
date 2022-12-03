@@ -5,9 +5,10 @@
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
-<a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Bat" asp-action="Add">Add new Bat</a>
-@*<hr />*@
-
+@if (User.IsInRole("Coach") || User.IsInRole("Player"))
+{
+    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Bat" asp-action="Add">Add new Bat</a>
+}
 
 <table class="table">
     <thead class="thead-light">
@@ -15,8 +16,11 @@
             <th scope="col"><h5>Brand</h5></th>
             <th scope="col"><h5>Size</h5></th>
             <th scope="col"><h5>Material</h5></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
+            @if (User.IsInRole("Coach") || User.IsInRole("Player"))
+            {
+                <th scope="col"></th>
+                <th scope="col"></th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -26,14 +30,17 @@
                 <td>@bat.Brand</td>
                 <td>@bat.Size</td>
                 <td>@bat.Material</td>
-                <td>
-                    <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Bat" asp-action="Edit" asp-route-id="@bat.id">Edit</a>
-                </td>
-                <td>
-                    <form class="input-group-sm" asp-controller="Bat" asp-action="Delete" asp-route-id="@bat.id">
-                        <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
-                    </form>
-                </td>
+                @if (User.IsInRole("Coach") || User.IsInRole("Player"))
+                {
+                    <td>
+                        <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Bat" asp-action="Edit" asp-route-id="@bat.id">Edit</a>
+                    </td>
+                    <td>
+                        <form class="input-group-sm" asp-controller="Bat" asp-action="Delete" asp-route-id="@bat.id">
+                            <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
+                        </form>
+                    </td>
+                }
             </tr>
         }
     </tbody>

@@ -49,9 +49,11 @@
                 <th scope="col">HT Hits</th>
                 <th scope="col">AT Errors</th>
                 <th scope="col">HT Errors</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                @if (User.IsInRole("Coach") || User.IsInRole("Playr"))
+                {
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -82,14 +84,17 @@
                     <td>@game.HomeTeamHits</td>
                     <td>@game.AwayTeamErrors</td>
                     <td>@game.HomeTeamErrors</td>
-                    <td>
-                        <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Game" asp-action="Edit" asp-route-id="@game.Id">Edit</a>
-                    </td>
-                    <td>
-                        <form class="input-group-sm" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id">
-                            <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
-                        </form>
-                    </td>
+                    @if (User.IsInRole("Coach") || User.IsInRole("Playr"))
+                    {
+                        <td>
+                            <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Game" asp-action="Edit" asp-route-id="@game.Id">Edit</a>
+                        </td>
+                        <td>
+                            <form class="input-group-sm" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id">
+                                <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
+                            </form>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
