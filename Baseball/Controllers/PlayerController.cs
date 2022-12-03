@@ -155,5 +155,25 @@ namespace Baseball.Controllers
 
             return RedirectToAction(nameof(All));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> MakePlayerFreeAgent(int id)
+        {
+            try
+            {
+                var playersTeamId = await playerService.MakePlayerFreeAgentAsync(id);
+                return RedirectToAction("GetDetails", "Team", new { id = (int)playersTeamId });
+            }
+            catch(NullReferenceException ex)
+            {
+                return RedirectToAction("GetDetails", "Team");
+
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("GetDetails", "Team");
+
+            }
+        }
     }
 }

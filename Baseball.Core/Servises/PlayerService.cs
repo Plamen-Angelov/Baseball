@@ -138,9 +138,32 @@ namespace Baseball.Core.Servises
             {
                 throw new NullReferenceException("Team was not found");
             }
-
+            
             team.Players.Add(player);
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<int?> MakePlayerFreeAgentAsync(int playerId)
+        {
+            var player = await GetById(playerId)
+                .Include(p => p.Team)
+                .FirstOrDefaultAsync();
+
+            if (player == null)
+            {
+                throw new NullReferenceException("Player was not found");
+            }
+
+            if (player.Team == null)
+            {
+                throw new NullReferenceException("Player's team was not found");
+            }
+
+            var teamId = player.TeamId;
+            player.Team!.Players.Remove(player);
+            await repository.SaveChangesAsync();
+
+            return teamId;
         }
     }
 }

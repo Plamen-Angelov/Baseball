@@ -17,5 +17,7 @@ namespace Baseball.Core.Contracts
         Task DeleteAsync(int id);
 
         Task AddToTeamAsync(int playerId, int teamId);
+
+        Task<int?> MakePlayerFreeAgentAsync(int playerId);
     }
 }
