@@ -15,7 +15,7 @@ namespace Baseball.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("GetHomePageAll", "ChampionShip");
         }
 
         public IActionResult Privacy()

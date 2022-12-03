@@ -1,0 +1,41 @@
+﻿@model List<HomePageViewModel>
+
+@{
+    ViewBag.Title = "Welcome to Baseball Statistics";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+@foreach (var championShip in Model)
+{
+
+    @if (championShip.Teams.Any())
+    {
+        <h4 class="text-center">@championShip.ChampionShipName - @championShip.ChampionShipYear</h4>
+
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col"><h5>Rank</h5></th>
+                    <th scope="col"><h5>Team</h5></th>
+                    <th scope="col"><h5>Wins</h5></th>
+                    <th scope="col"><H5>Loses</H5></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < championShip.Teams.Count; i++)
+                {
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@championShip.Teams[i].Name</td>
+                        <td>@championShip.Teams[i].WinGames</td>
+                        <td>@championShip.Teams[i].LoseGames</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+
+

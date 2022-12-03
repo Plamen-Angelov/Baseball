@@ -101,5 +101,12 @@ namespace Baseball.Controllers
             await championShipService.DeleteAsync(id);
             return RedirectToAction(nameof(All));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetHomePageAll()
+        {
+            var championShips = await championShipService.GetHomePageAllAsync();
+            return View(championShips);
+        }
     }
 }

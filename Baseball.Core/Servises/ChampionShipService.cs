@@ -155,5 +155,42 @@ namespace Baseball.Core.Servises
                 .Include(c => c.Games)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<List<HomePageViewModel>> GetHomePageAllAsync()
+        {
+            var championShips = await repository.GetAll<ChampionShip>()
+                .Where(c => c.IsDeleted == false && c.Year == DateTime.Now.Year)
+                .Select(c => new HomePageViewModel()
+                {
+                    ChampionShipName = c.Name,
+                    ChampionShipYear = c.Year,
+                    Teams = c.Teams
+                    .Select(t => new TeamScoreViewModel()
+                    {
+                        Id = t.Id,
+                        Name = t.Name
+                    })
+                    .ToList()
+                })
+                .ToListAsync();
+
+            foreach (var championShip in championShips)
+            {
+                foreach (var team in championShip.Teams)
+                {
+                    var teamEntity = await teamService.GetEntityByIdAsync(team.Id);
+                    team.WinGames = await teamService.GetWinsAsync(teamEntity);
+                    team.LoseGames = await teamService.GetLosesAsync(teamEntity);
+                }
+
+                championShip.Teams
+                                .OrderByDescending(t => t.WinGames)
+                                .ThenBy(t => t.LoseGames);
+            }
+
+
+
+            return championShips;
+        }
     }
 }

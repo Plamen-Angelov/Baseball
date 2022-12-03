@@ -9,6 +9,8 @@ namespace Baseball.Core.Contracts
 
         Task<List<ChampionShipViewModel>> GetAllAsync();
 
+        Task<List<HomePageViewModel>> GetHomePageAllAsync();
+
         Task<ChampionShipDetailsViewModel> GetDetailsAsync(int id);
 
         Task AddAsync(AddChampionShipViewModel model);
