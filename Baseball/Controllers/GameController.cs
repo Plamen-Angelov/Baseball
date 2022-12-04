@@ -58,7 +58,7 @@ namespace Baseball.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError(nameof(Edit), ex.Message);
+                logger.LogError(nameof(Add), ex.Message);
                 return RedirectToAction(nameof(All));
             }
         }
@@ -80,12 +80,12 @@ namespace Baseball.Controllers
             }
             catch(ArgumentNullException ne)
             {
-                logger.LogError(nameof(Edit), ne.Message);
+                logger.LogError(nameof(Add), ne.Message);
                 return RedirectToAction(nameof(All));
             }
             catch (Exception e)
             {
-                logger.LogError(nameof(Edit), e.Message);
+                logger.LogError(nameof(Add), e.Message);
                 return RedirectToAction(nameof(All));
             }
         }
@@ -158,12 +158,12 @@ namespace Baseball.Controllers
             }
             catch (ArgumentNullException ne)
             {
-                logger.LogError(nameof(Edit), ne.Message);
+                logger.LogError(nameof(Delegate), ne.Message);
                 return RedirectToAction(nameof(All));
             }
             catch (Exception e)
             {
-                logger.LogError(nameof(Edit), e.Message);
+                logger.LogError(nameof(Delete), e.Message);
                 return RedirectToAction(nameof(All));
             }
         }

@@ -12,15 +12,18 @@ namespace Baseball.Controllers
         private readonly IPlayerServicece playerService;
         private readonly IBatService batService;
         private readonly ITeamService teamService;
+        private readonly ILogger logger;
 
         public PlayerController(
-            IPlayerServicece playerService, 
+            IPlayerServicece playerService,
             IBatService batService,
-            ITeamService teamService)
+            ITeamService teamService,
+            ILogger<PlayerController> logger)
         {
             this.playerService = playerService;
             this.batService = batService;
             this.teamService = teamService;
+            this.logger = logger;
         }
 
         public IActionResult Index()
@@ -31,21 +34,37 @@ namespace Baseball.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var players = await playerService.GetAllAsync();
-
-            return View(players);
+            try
+            {
+                var players = await playerService.GetAllAsync();
+                return View(players);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(All), e.Message);
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
         [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Add()
         {
-            var model = new AddPlayerViewModel()
+            try
             {
-                Bats = await batService.GetAllAsync()
-            };
+                var model = new AddPlayerViewModel()
+                {
+                    Bats = await batService.GetAllAsync()
+                };
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(Add), e.Message);
+                return RedirectToAction(nameof(All));
+            }
+
         }
 
         [HttpPost]
@@ -62,9 +81,10 @@ namespace Baseball.Controllers
                 await playerService.AddAsync(model);
                 return RedirectToAction(nameof(All));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                ModelState.AddModelError("", "Something went wrong. Player was not added");
+                logger.LogError(nameof(Add), e.Message);
+                ModelState.AddModelError("", "Something went wrong. Player was not added. Please try again.");
                 return View(model);
             }
         }
@@ -73,21 +93,24 @@ namespace Baseball.Controllers
         [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id)
         {
-            var player = await playerService.GetByIdAsync(id);
-
-            if (player == null)
+            try
             {
+                var player = await playerService.GetByIdAsync(id);
+
+                if (player == null)
+                {
+                    return RedirectToAction(nameof(All));
+                }
+
+                player.Bats = await batService.GetAllAsync();
+
+                return View(player);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(Edit), e.Message);
                 return RedirectToAction(nameof(All));
             }
-
-            if (!(User.IsInRole("Player") || User.IsInRole("Coach")))
-            {
-                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
-            }
-
-            player.Bats = await batService.GetAllAsync();
-
-            return View(player);
         }
 
         [HttpPost]
@@ -97,11 +120,6 @@ namespace Baseball.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
-
-            if (!(User.IsInRole("Player") || User.IsInRole("Coach")))
-            {
-                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
             }
 
             if (id != model.Id)
@@ -114,39 +132,48 @@ namespace Baseball.Controllers
                 await playerService.UpdateAsync(id, model);
                 return RedirectToAction(nameof(All));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                ModelState.AddModelError("", "Player was not found or unexpected error occured");
-                return View(model);
+                logger.LogError(nameof(Edit), e.Message);
+                return RedirectToAction(nameof(All));
             }
-            
         }
 
         [HttpPost]
         [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (!(User.IsInRole("Player") || User.IsInRole("Coach")))
+            try
             {
-                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+                await playerService.DeleteAsync(id);
+                return RedirectToAction(nameof(All));
             }
-
-            await playerService.DeleteAsync(id);
-
-            return RedirectToAction(nameof(All));
+            catch (Exception e)
+            {
+                logger.LogError(nameof(Delete), e.Message);
+                return RedirectToAction(nameof(All));
+            }
         }
 
         [HttpGet]
         [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> AddToTeam(int id)
         {
-            var model = new AddPlayerToTeamViewModel()
+            try
             {
-                Player = await playerService.GetPlayerByIdAsync(id),
-                Teams = await teamService.GetAllTeamNamesAsync()
-            };
+                var model = new AddPlayerToTeamViewModel()
+                {
+                    Player = await playerService.GetPlayerByIdAsync(id),
+                    Teams = await teamService.GetAllTeamNamesAsync()
+                };
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(AddToTeam), e.Message);
+                return RedirectToAction(nameof(All));
+            }
         }
 
         [HttpPost]
@@ -158,9 +185,21 @@ namespace Baseball.Controllers
                 return View(model);
             }
 
-            await playerService.AddToTeamAsync(id, model.TeamId);
-
-            return RedirectToAction(nameof(All));
+            try
+            {
+                await playerService.AddToTeamAsync(id, model.TeamId);
+                return RedirectToAction(nameof(All));
+            }
+            catch(NullReferenceException ne)
+            {
+                logger.LogError(nameof(AddToTeam), ne.Message);
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(AddToTeam), e.Message);
+                return RedirectToAction(nameof(All));
+            }
         }
 
         [HttpGet]
@@ -172,15 +211,15 @@ namespace Baseball.Controllers
                 var playersTeamId = await playerService.MakePlayerFreeAgentAsync(id);
                 return RedirectToAction("GetDetails", "Team", new { id = (int)playersTeamId });
             }
-            catch(NullReferenceException ex)
+            catch (NullReferenceException ne)
             {
-                return RedirectToAction("GetDetails", "Team");
-
+                logger.LogError(nameof(MakePlayerFreeAgent), ne.Message);
+                return RedirectToAction("All", "Team");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return RedirectToAction("GetDetails", "Team");
-
+                logger.LogError(nameof(MakePlayerFreeAgent), e.Message);
+                return RedirectToAction("All", "Team");
             }
         }
     }

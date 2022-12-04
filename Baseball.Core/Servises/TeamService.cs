@@ -1,5 +1,4 @@
-﻿using Baseball.Common.ViewModels.GameViewModels;
-using Baseball.Common.ViewModels.PlayerViewModels;
+﻿using Baseball.Common.ViewModels.PlayerViewModels;
 using Baseball.Common.ViewModels.TeamViewModels;
 using Baseball.Core.Contracts;
 using Baseball.Infrastructure.Data.Entities;
