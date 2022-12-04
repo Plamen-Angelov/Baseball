@@ -83,9 +83,9 @@ namespace Baseball.Controllers
                 logger.LogError(nameof(Edit), ae.Message);
                 return RedirectToAction(nameof(All));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                ModelState.AddModelError("", $"Something went wrong. Please try again.");
+                logger.LogError(nameof(Edit), e.Message);
                 return RedirectToAction(nameof(All));
             }
         }

@@ -47,7 +47,14 @@ namespace Baseball.Core.Servises
 
         public async Task<ChampionShipDetailsViewModel> GetDetailsAsync(int id)
         {
-            var championShipDetails = await GetById(id)
+            var championShip = GetById(id);
+
+            if (championShip == null)
+            {
+                throw new ArgumentException($"ChampionShip with id {id} was not found");
+            }
+
+            var championShipDetails = await championShip
                 .Select(c => new ChampionShipDetailsViewModel()
                 {
                     Id = c.Id,
@@ -130,7 +137,7 @@ namespace Baseball.Core.Servises
 
             if (championShip == null)
             {
-                throw new NullReferenceException($"Championship with id {id} was not found");
+                throw new ArgumentNullException($"Championship with id {id} was not found");
             }
 
             championShip.Name = model.Name;
@@ -143,6 +150,11 @@ namespace Baseball.Core.Servises
         {
             var championShip = await GetEntityByIdAsync(id);
 
+            if (championShip == null)
+            {
+                throw new ArgumentNullException($"Championship with id {id} was not found");
+            }
+
             championShip.IsDeleted = true;
 
             await repository.SaveChangesAsync();
@@ -153,7 +165,7 @@ namespace Baseball.Core.Servises
             return await GetById(id)
                 .Include(c => c.Teams)
                 .Include(c => c.Games)
-                .FirstOrDefaultAsync();
+                .SingleAsync();
         }
 
         public async Task<List<HomePageViewModel>> GetHomePageAllAsync()
@@ -187,8 +199,6 @@ namespace Baseball.Core.Servises
                                 .OrderByDescending(t => t.WinGames)
                                 .ThenBy(t => t.LoseGames);
             }
-
-
 
             return championShips;
         }
