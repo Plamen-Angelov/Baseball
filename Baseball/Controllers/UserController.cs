@@ -11,11 +11,13 @@ namespace Baseball.Controllers
     {
         private readonly IUserService userService;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly ILogger logger;
 
-        public UserController(IUserService userService, UserManager<IdentityUser> userManager)
+        public UserController(IUserService userService, UserManager<IdentityUser> userManager, ILogger<UserController> logger)
         {
             this.userService = userService;
             this.userManager = userManager;
+            this.logger = logger;
         }
 
         public IActionResult Index()
@@ -39,44 +41,68 @@ namespace Baseball.Controllers
                 return View(model);
             }
 
-            var user = await userManager.FindByEmailAsync(model.Email);
-
-            if (user == null)
+            try
             {
-                ModelState.AddModelError("Email", $"User with email \"{model.Email}\" was not found.");
+                var user = await userManager.FindByEmailAsync(model.Email);
 
+                if (user == null)
+                {
+                    ModelState.AddModelError("Email", $"User with email \"{model.Email}\" was not found.");
+
+                    return View(model);
+                }
+
+                var foundbyEmailModel = new FoundByEmailViewModel()
+                {
+                    User = user
+                };
+
+                if ((await userManager.GetRolesAsync(user)).Any(r => r == "Player"))
+                {
+                    foundbyEmailModel.IsInRolePlayer = true;
+                }
+
+                return View("FoundByEmail", foundbyEmailModel);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(GetByEmail), e.Message);
+                ModelState.AddModelError("", $"Unexpected error occured. Please try again");
                 return View(model);
-            }
-
-            var foundbyEmailModel = new FoundByEmailViewModel()
-            {
-                User = user
-            };
-
-            if ((await userManager.GetRolesAsync(user)).Any(r => r == "Player"))
-            {
-                foundbyEmailModel.IsInRolePlayer = true;
-            }
-            
-            return View("FoundByEmail", foundbyEmailModel);
+            } 
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsersWithPlayerRole()
         {
-            var players = await userManager.GetUsersInRoleAsync("Player");
-
-            return View(players);
+            try
+            {
+                var players = await userManager.GetUsersInRoleAsync("Player");
+                return View(players);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(GetAllUsersWithPlayerRole), e.Message);
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> AddToPlayers(string id)
         {
-            var user = await userManager.FindByIdAsync(id);
+            try
+            {
+                var user = await userManager.FindByIdAsync(id);
 
-            await userManager.AddToRolesAsync(user, new string[] { "Player" });
+                await userManager.AddToRolesAsync(user, new string[] { "Player" });
 
-            return RedirectToAction(nameof(GetAllUsersWithPlayerRole));
+                return RedirectToAction(nameof(GetAllUsersWithPlayerRole));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(AddToPlayers), e.Message);
+                return RedirectToAction(nameof(GetAllUsersWithPlayerRole));
+            }
         }
     }
 }
