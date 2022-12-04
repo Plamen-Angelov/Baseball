@@ -62,7 +62,6 @@ namespace Baseball.Controllers
         public IActionResult Add()
         {
             var championShip = new AddChampionShipViewModel();
-
             return View(championShip);
         }
 
@@ -146,12 +145,12 @@ namespace Baseball.Controllers
             }
             catch(ArgumentNullException ne)
             {
-                logger.LogError(nameof(Edit), ne.Message);
+                logger.LogError(nameof(Delete), ne.Message);
                 return RedirectToAction(nameof(All));
             }
             catch (Exception e)
             {
-                logger.LogError(nameof(Edit), e.Message);
+                logger.LogError(nameof(Delete), e.Message);
                 return RedirectToAction(nameof(All));
             }
         }
@@ -167,7 +166,7 @@ namespace Baseball.Controllers
             }
             catch (Exception e)
             {
-                logger.LogError(nameof(Edit), e.Message);
+                logger.LogError(nameof(GetHomePageAll), e.Message);
                 return View("Unreachable");
             }
         }

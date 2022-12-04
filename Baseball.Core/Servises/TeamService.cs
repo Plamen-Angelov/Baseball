@@ -117,6 +117,11 @@ namespace Baseball.Core.Servises
         {
             var team = await GetEntityByIdAsync(id);
 
+            if (team == null)
+            {
+                throw new ArgumentNullException($"Team with id {id} was not found.");
+            }
+
             team!.Name = model.Name;
             team.HomeColor = model.HomeColor;
             team.AwayColor = model.AwayColor;
@@ -127,6 +132,11 @@ namespace Baseball.Core.Servises
         public async Task DeleteAsync(int id)
         {
             var team = await GetEntityByIdAsync(id);
+
+            if (team == null)
+            {
+                throw new ArgumentNullException($"Team with id {id} was not found.");
+            }
 
             team!.IsDeleted = true;
 

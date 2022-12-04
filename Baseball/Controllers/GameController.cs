@@ -158,7 +158,7 @@ namespace Baseball.Controllers
             }
             catch (ArgumentNullException ne)
             {
-                logger.LogError(nameof(Delegate), ne.Message);
+                logger.LogError(nameof(Delete), ne.Message);
                 return RedirectToAction(nameof(All));
             }
             catch (Exception e)

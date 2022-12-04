@@ -102,7 +102,7 @@ namespace Baseball.Controllers
             catch(ArgumentException ae)
             {
                 logger.LogError(nameof(Edit), ae.Message);
-                return View(model);
+                return RedirectToAction(nameof(All)); ;
             }
             catch (Exception)
             {

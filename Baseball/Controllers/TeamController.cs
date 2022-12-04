@@ -9,10 +9,12 @@ namespace Baseball.Controllers
     public class TeamController : Controller
     {
         private readonly ITeamService teamService;
+        private readonly ILogger logger;
 
-        public TeamController(ITeamService teamService)
+        public TeamController(ITeamService teamService, ILogger<TeamController> logger)
         {
             this.teamService = teamService;
+            this.logger = logger;
         }
 
         public IActionResult Index()
@@ -23,9 +25,16 @@ namespace Baseball.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var teams = await teamService.GetAllAsync();
-
-            return View(teams);
+            try
+            {
+                var teams = await teamService.GetAllAsync();
+                return View(teams);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(All), e.Message);
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
@@ -51,8 +60,9 @@ namespace Baseball.Controllers
                 await teamService.AddAsync(model);
                 return RedirectToAction(nameof(All));
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                logger.LogError(nameof(Add), e.Message);
                 ModelState.AddModelError("", $"Something went wrong. Team was not added.");
                 return View(model);
             };
@@ -61,29 +71,45 @@ namespace Baseball.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDetails(int id)
         {
-            var teamDetails = await teamService.GetDetailsAsync(id);
-
-            if (teamDetails == null)
+            try
             {
-                ModelState.AddModelError("", "Team was not found or unexpected error occured.");
+                var teamDetails = await teamService.GetDetailsAsync(id);
+
+                if (teamDetails == null)
+                {
+                    ModelState.AddModelError("", "Team was not found or unexpected error occured.");
+                    return RedirectToAction(nameof(All));
+                }
+
+                return View(teamDetails);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(GetDetails), e.Message);
                 return RedirectToAction(nameof(All));
             }
-
-            return View(teamDetails);
         }
 
         [HttpGet]
         [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id)
         {
-            var team = await teamService.GetByIdAsync(id);
-
-            if (team == null)
+            try
             {
+                var team = await teamService.GetByIdAsync(id);
+
+                if (team == null)
+                {
+                    return RedirectToAction(nameof(All));
+                }
+
+                return View(team);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(Edit), e.Message);
                 return RedirectToAction(nameof(All));
             }
-
-            return View(team);
         }
 
         [HttpPost]
@@ -92,31 +118,40 @@ namespace Baseball.Controllers
         {
             if (id != model.Id)
             {
-                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+                return RedirectToAction(nameof(All));
             }
 
-            if (await teamService.GetByIdAsync(id) == null)
+            try
             {
-                ModelState.AddModelError("", "Team was not found");
-                return View(model);
+                await teamService.UpdateAsync(id, model);
+                return RedirectToAction(nameof(All));
             }
-
-            await teamService.UpdateAsync(id, model);
-            return RedirectToAction(nameof(All));
+            catch(ArgumentNullException ne)
+            {
+                logger.LogError(nameof(Edit), ne.Message);
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(Edit), e.Message);
+                return RedirectToAction(nameof(All));
+            }
         }
 
         [HttpPost]
         [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (await teamService.GetByIdAsync(id) == null)
+            try
             {
+                await teamService.DeleteAsync(id);
                 return RedirectToAction(nameof(All));
             }
-
-
-            await teamService.DeleteAsync(id);
-            return RedirectToAction(nameof(All));
+            catch (Exception e)
+            {
+                logger.LogError(nameof(Delete), e.Message);
+                return RedirectToAction(nameof(All));
+            }
         }
     }
 }
