@@ -11,14 +11,17 @@ namespace Baseball.Controllers
         private readonly IGameService gameService;
         private readonly ITeamService teamService;
         private readonly IChampionShipService championShipService;
+        private readonly ILogger logger;
 
         public GameController(IGameService gameService, 
             ITeamService teamService,
-            IChampionShipService championShipService)
+            IChampionShipService championShipService,
+            ILogger<GameController> logger)
         {
             this.gameService = gameService;
             this.teamService = teamService;
             this.championShipService = championShipService;
+            this.logger = logger;
         }
 
         public IActionResult Index()
@@ -29,20 +32,35 @@ namespace Baseball.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var teams = await gameService.GetAllAsync();
-
-            return View(teams);
+            try
+            {
+                var teams = await gameService.GetAllAsync();
+                return View(teams);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(nameof(All), ex.Message);
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
         [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Add()
         {
-            var model = new AddGameViewModel();
-            model.Teams = await teamService.GetAllTeamNamesAsync();
-            model.ChampionShips = await championShipService.GetAllChampionShipNamesAsync();
+            try
+            {
+                var model = new AddGameViewModel();
+                model.Teams = await teamService.GetAllTeamNamesAsync();
+                model.ChampionShips = await championShipService.GetAllChampionShipNamesAsync();
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(nameof(Edit), ex.Message);
+                return RedirectToAction(nameof(All));
+            }
         }
 
         [HttpPost]
@@ -55,25 +73,47 @@ namespace Baseball.Controllers
                 return View(model);
             }
 
-            await gameService.AddAsync(model);
-            return RedirectToAction(nameof(All));
+            try
+            {
+                await gameService.AddAsync(model);
+                return RedirectToAction(nameof(All));
+            }
+            catch(ArgumentNullException ne)
+            {
+                logger.LogError(nameof(Edit), ne.Message);
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(Edit), e.Message);
+                return RedirectToAction(nameof(All));
+            }
         }
 
         [HttpGet]
         [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Edit(int id)
         {
-            var game = await gameService.GetByIdAsync(id);
-
-            if (game == null)
+            try
             {
+                var game = await gameService.GetByIdAsync(id);
+
+                if (game == null)
+                {
+                    logger.LogError(nameof(Edit), "Game was not found");
+                    return RedirectToAction(nameof(All));
+                }
+
+                game.Teams = await teamService.GetAllTeamNamesAsync();
+                game.ChampionShips = await championShipService.GetAllChampionShipNamesAsync();
+
+                return View(game);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(nameof(Edit), ex.Message);
                 return RedirectToAction(nameof(All));
             }
-
-            game.Teams = await teamService.GetAllTeamNamesAsync();
-            game.ChampionShips = await championShipService.GetAllChampionShipNamesAsync();
-
-            return View(game);
         }
 
         [HttpPost]
@@ -90,26 +130,42 @@ namespace Baseball.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if (await gameService.GetByIdAsync(id) == null)
+            try
             {
+                await gameService.UpdateAsync(id, model);
                 return RedirectToAction(nameof(All));
             }
-
-            await gameService.UpdateAsync(id, model);
-            return RedirectToAction(nameof(All));
+            catch (ArgumentNullException ne)
+            {
+                logger.LogError(nameof(Edit), ne.Message);
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(Edit), e.Message);
+                return RedirectToAction(nameof(All));
+            }
         }
 
         [HttpPost]
         [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (await gameService.GetByIdAsync(id) == null)
+            try
             {
+                await gameService.DeleteAsync(id);
                 return RedirectToAction(nameof(All));
             }
-
-            await gameService.DeleteAsync(id);
-            return RedirectToAction(nameof(All));
+            catch (ArgumentNullException ne)
+            {
+                logger.LogError(nameof(Edit), ne.Message);
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(Edit), e.Message);
+                return RedirectToAction(nameof(All));
+            }
         }
     }
 }

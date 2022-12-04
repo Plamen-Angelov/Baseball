@@ -70,8 +70,25 @@ namespace Baseball.Core.Servises
         private async Task AddTeamsToChampionShipIfNotThere(int awayTeamId, int homeTeamId, int championShipId)
         {
             var awayTeam = await teamService.GetEntityByIdAsync(awayTeamId);
+
+            if (awayTeam == null)
+            {
+                throw new ArgumentNullException("Away team was not found.");
+            }
+
             var homeTeam = await teamService.GetEntityByIdAsync(homeTeamId);
+
+            if (homeTeam == null)
+            {
+                throw new ArgumentNullException("Home team was not found.");
+            }
+
             var championShip = await championShipService.GetEntityByIdAsync(championShipId);
+
+            if (championShip == null)
+            {
+                throw new ArgumentNullException("ChampionShip was not found.");
+            }
 
             if (!championShip.Teams.Any(t => t.Name == awayTeam.Name))
             {
@@ -148,6 +165,11 @@ namespace Baseball.Core.Servises
             var game = await GetById(id)
                 .FirstOrDefaultAsync();
 
+            if (game == null)
+            {
+                throw new ArgumentNullException($"Game with id {id} was not found.");
+            }
+
             game.ChampionShipId = model.ChampionShipId;
             game.AwayTeamId = model.AwayTeamId;
             game.HomeTeamId = model.HomeTeamId;
@@ -178,6 +200,11 @@ namespace Baseball.Core.Servises
                 .Include(g => g.ChampionShip)
                 .ThenInclude(c => c.Teams)
                 .FirstOrDefaultAsync();
+
+            if (game == null)
+            {
+                throw new ArgumentNullException($"Game with id {id} was not found.");
+            }
 
             game.IsDeleted = true;
 
