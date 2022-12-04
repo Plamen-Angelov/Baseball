@@ -38,11 +38,11 @@ namespace Baseball.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Coach, Player")]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             var model = new AddPlayerViewModel()
             {
-                Bats = batService.GetAll()
+                Bats = await batService.GetAllAsync()
             };
 
             return View(model);
@@ -85,7 +85,7 @@ namespace Baseball.Controllers
                 return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
             }
 
-            player.Bats = batService.GetAll();
+            player.Bats = await batService.GetAllAsync();
 
             return View(player);
         }

@@ -2,7 +2,7 @@
 using Baseball.Core.Contracts;
 using Baseball.Infrastructure.Data.Entities;
 using Baseball.Infrastructure.Repository;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Baseball.Core.Servises
 {
@@ -15,16 +15,16 @@ namespace Baseball.Core.Servises
             this.repository = repository;
         }
 
-        public IEnumerable<BatMaterialViewModel> GetAllBatMaterials()
+        public async Task<IEnumerable<BatMaterialViewModel>> GetAllBatMaterialsAsync()
         {
-            var materials = repository.GetAll<BatMaterial>()
+            var materials = await repository.GetAll<BatMaterial>()
                 .Where(m => m.IsDeleted == false)
                 .Select(m => new BatMaterialViewModel()
                 {
                     Id = m.Id,
                     Name = m.Name
                 })
-                .ToList();
+                .ToListAsync();
 
             return materials;
         }

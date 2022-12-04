@@ -3,6 +3,7 @@ using Baseball.Core.Contracts;
 using Baseball.Infrastructure.Data.Entities;
 using Baseball.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Baseball.Core.Servises
 {
@@ -10,11 +11,13 @@ namespace Baseball.Core.Servises
     {
         private readonly IRepository repository;
         private readonly IBatMaterialService batMaterialService;
+        private readonly ILogger logger;
 
-        public BatService(IRepository repository, IBatMaterialService service)
+        public BatService(IRepository repository, IBatMaterialService batMaterialService, ILogger<BatService> logger)
         {
             this.repository = repository;
-            this.batMaterialService = service;
+            this.batMaterialService = batMaterialService;
+            this.logger = logger;
         }
 
         public async Task AddAsync(AddBatViewModel model)
@@ -30,9 +33,9 @@ namespace Baseball.Core.Servises
             await repository.SaveChangesAsync();
         }
 
-        public IEnumerable<BatViewModel> GetAll()
+        public async Task<IEnumerable<BatViewModel>> GetAllAsync()
         {
-            var bats = repository.GetAll<Bat>()
+            var bats = await repository.GetAll<Bat>()
                 .Include(b => b.BatMaterial)
                 .Where(b => b.IsDeleted == false)
                 .Select(b => new BatViewModel()
@@ -42,33 +45,34 @@ namespace Baseball.Core.Servises
                     Size = b.Size,
                     Brand = b.Brand
                 })
-                .ToList();
+                .ToListAsync();
 
             return bats;
         }
 
-        public AddBatViewModel GetById(int id)
+        public async Task<AddBatViewModel> GetByIdAsync(int id)
         {
-            var bat = repository
+            var bat = await repository
                 .GetAll<Bat>()
                 .Include(b => b.BatMaterial)
-                .FirstOrDefault(b => b.Id == id);
+                .FirstOrDefaultAsync(b => b.Id == id);
 
             if (bat == null || bat.IsDeleted == true)
             {
+                logger.LogError("Bat with id {0} does not exists or it is flaged deleted", id);
                 throw new ArgumentException("Bat was not found");
             }
 
-            var batVieeModel = new AddBatViewModel()
+            var batViewModel = new AddBatViewModel()
             {
                 Id = id,
                 MaterialId = bat.BatMaterial.Id,
-                Materials = batMaterialService.GetAllBatMaterials().ToList(),
+                Materials = (await batMaterialService.GetAllBatMaterialsAsync()).ToList(),
                 Size = bat.Size,
                 Brand = bat.Brand
             };
 
-            return batVieeModel;
+            return batViewModel;
         }
 
         public async Task UpdateAsync(int id, AddBatViewModel model)
@@ -80,6 +84,7 @@ namespace Baseball.Core.Servises
 
             if(bat == null || bat.IsDeleted == true)
             {
+                logger.LogError("Bat with id {0} does not exists or it is flaged deleted", id);
                 throw new ArgumentException("Bat was not found");
             }
 
@@ -100,6 +105,7 @@ namespace Baseball.Core.Servises
 
             if (bat == null || bat.IsDeleted == true)
             {
+                logger.LogError("Bat with id {0} does not exists or it is flaged deleted", id);
                 throw new ArgumentException("Bat was not found");
             }
 

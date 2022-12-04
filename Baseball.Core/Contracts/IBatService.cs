@@ -4,11 +4,11 @@ namespace Baseball.Core.Contracts
 {
     public interface IBatService
     {
-        IEnumerable<BatViewModel> GetAll();
+        Task<IEnumerable<BatViewModel>> GetAllAsync();
 
         Task AddAsync(AddBatViewModel model);
 
-        AddBatViewModel GetById(int id);
+        Task<AddBatViewModel> GetByIdAsync(int id);
 
         Task UpdateAsync(int id, AddBatViewModel model);
 

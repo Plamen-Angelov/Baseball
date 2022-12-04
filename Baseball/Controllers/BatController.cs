@@ -10,29 +10,38 @@ namespace Baseball.Controllers
     {
         private readonly IBatService batService;
         private readonly IBatMaterialService batMaterialService;
+        private readonly ILogger logger;
 
 
-        public BatController(IBatService batService, IBatMaterialService batMaterialService)
+        public BatController(IBatService batService, IBatMaterialService batMaterialService, ILogger<BatController> logger)
         {
             this.batService = batService;
             this.batMaterialService = batMaterialService;
+            this.logger = logger;
         }
 
         [HttpGet]
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            var bats = batService.GetAll();
-
-            return View(bats);
+            try
+            {
+                var bats = await batService.GetAllAsync();
+                return View(bats);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(nameof(All), ex.Message);
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
         [Authorize(Roles = "Coach, Player")]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             var model = new AddBatViewModel()
             {
-                Materials = batMaterialService.GetAllBatMaterials().ToList()
+                Materials = (await batMaterialService.GetAllBatMaterialsAsync()).ToList()
             };
 
             return View(model);
@@ -52,26 +61,31 @@ namespace Baseball.Controllers
                 await batService.AddAsync(model);
                 return RedirectToAction(nameof(All));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Something went wrong. The bat was not added.");
+                logger.LogError(nameof(Add), ex.Message);
+                ModelState.AddModelError("", $"Something went wrong. The bat was not added. Please try again.");
                 return View(model);
             };
         }
 
         [HttpGet]
         [Authorize(Roles = "Coach, Player")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             try
             {
-                var model = batService.GetById(id);
+                var model = await batService.GetByIdAsync(id);
                 return View(model);
-
             }
-            catch (Exception e)
+            catch (ArgumentException ae)
             {
-                ModelState.AddModelError("", $"Bat wasn't added. {e.Message}");
+                logger.LogError(nameof(Edit), ae.Message);
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", $"Something went wrong. Please try again.");
                 return RedirectToAction(nameof(All));
             }
         }
@@ -87,12 +101,12 @@ namespace Baseball.Controllers
             }
             catch(ArgumentException ae)
             {
-                ModelState.AddModelError("", $"{ae.Message}");
+                logger.LogError(nameof(Edit), ae.Message);
                 return View(model);
             }
             catch (Exception)
             {
-                ModelState.AddModelError("", $"Unexpected error occured");
+                ModelState.AddModelError("", $"Unexpected error occured. Please try again");
                 return View(model);
             }
             
@@ -102,8 +116,21 @@ namespace Baseball.Controllers
         [Authorize(Roles = "Coach, Player")]
         public async Task<IActionResult> Delete(int id)
         {
-            await batService.DeleteAsync(id);
-            return RedirectToAction(nameof(All));
+            try
+            {
+                await batService.DeleteAsync(id);
+                return RedirectToAction(nameof(All));
+            }
+            catch (ArgumentException ae)
+            {
+                logger.LogError(nameof(Delete), ae.Message);
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(Delete), e.Message);
+                return RedirectToAction(nameof(All));
+            }
         }
     }
 }
