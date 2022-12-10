@@ -61,7 +61,7 @@ namespace Baseball.Core.Servises
             {
                 game.Winner = game.HomeTeam;
             }
-            else if (game.HomeTeamHits < game.AwayTeamHits)
+            else if (game.HomeTeamRuns < game.AwayTeamRuns)
             {
                 game.Winner = game.AwayTeam;
             }
@@ -133,7 +133,7 @@ namespace Baseball.Core.Servises
                 .ToListAsync();
         }
 
-        public async Task<EditGameViewModel> GetByIdAsync(int id)
+        public async Task<EditGameViewModel?> GetByIdAsync(int id)
         {
             return await GetById(id)
                 .Select(g => new EditGameViewModel()
@@ -151,7 +151,7 @@ namespace Baseball.Core.Servises
                     AwayTeamErrors = g.AwayTeamErrors,
                     HomeTeamErrors = g.AwayTeamErrors
                 })
-                .SingleAsync();
+                .FirstOrDefaultAsync();
         }
 
         private IQueryable<Game> GetById(int id)
