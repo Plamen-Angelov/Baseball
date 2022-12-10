@@ -1,9 +1,7 @@
 ﻿using Baseball.Common.ViewModels.BatViewModels;
 using Baseball.Core.Servises;
-using Baseball.Infrastructure.Data;
 using Baseball.Infrastructure.Data.Entities;
 using Baseball.Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -15,19 +13,13 @@ namespace Baseball.UnitTests.ServicesTests
         private Mock<ILogger<BatService>> mockLogger;
         private BatService batService;
         private IRepository repository;
-        private BaseballDbContext context;
+        private InMemoryDatabase inMemoryDb;
 
         [SetUp]
         public async Task Setup()
         {
-            var contextOptions = new DbContextOptionsBuilder<BaseballDbContext>()
-                .UseInMemoryDatabase("AppInMemoryDb")
-                .Options;
-            context = new BaseballDbContext(contextOptions);
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
-
-            repository = new Repository(context);
+            inMemoryDb = new InMemoryDatabase();
+            repository = new Repository(inMemoryDb.Context);
             mockLogger = new Mock<ILogger<BatService>>();
             batMaterialService = new BatMaterialService(repository);
             batService = new BatService(repository, batMaterialService, mockLogger.Object);
@@ -45,7 +37,7 @@ namespace Baseball.UnitTests.ServicesTests
         [TearDown]
         public void TearDown()
         {
-            context.Dispose();
+            inMemoryDb.Context.Dispose();
         }
 
         [Test]
