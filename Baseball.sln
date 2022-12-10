@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baseball.Core", "Baseball.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baseball.Infrastructure", "Baseball.Infrastructure\Baseball.Infrastructure.csproj", "{F152514E-AC18-4668-8409-030B745B3699}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baseball.Common", "Baseball.Common\Baseball.Common.csproj", "{90F04CB7-1C07-4DFF-BE49-1E28EFB40D27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baseball.Common", "Baseball.Common\Baseball.Common.csproj", "{90F04CB7-1C07-4DFF-BE49-1E28EFB40D27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baseball.UnitTests", "Baseball.Tests\Baseball.UnitTests.csproj", "{D692BA7F-8252-437A-8610-798870DFA23D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{90F04CB7-1C07-4DFF-BE49-1E28EFB40D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90F04CB7-1C07-4DFF-BE49-1E28EFB40D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90F04CB7-1C07-4DFF-BE49-1E28EFB40D27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D692BA7F-8252-437A-8610-798870DFA23D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D692BA7F-8252-437A-8610-798870DFA23D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D692BA7F-8252-437A-8610-798870DFA23D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D692BA7F-8252-437A-8610-798870DFA23D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

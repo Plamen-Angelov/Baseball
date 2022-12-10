@@ -1,5 +1,4 @@
 ﻿using Baseball.Infrastructure.Data;
-using Baseball.Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Baseball.Infrastructure.Repository

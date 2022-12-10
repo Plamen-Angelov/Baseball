@@ -54,6 +54,7 @@ namespace Baseball.Core.Servises
         {
             var bat = await repository
                 .GetAll<Bat>()
+                .Where(b => b.IsDeleted == false)
                 .Include(b => b.BatMaterial)
                 .FirstOrDefaultAsync(b => b.Id == id);
 
