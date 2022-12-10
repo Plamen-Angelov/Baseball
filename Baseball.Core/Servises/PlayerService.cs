@@ -37,7 +37,12 @@ namespace Baseball.Core.Servises
         public async Task DeleteAsync(int id)
         {
             var player = await GetById(id)
-                .SingleAsync();
+                .FirstOrDefaultAsync();
+
+            if (player == null)
+            {
+                throw new ArgumentException("Player was not found");
+            }
 
             player.IsDeleted = true;
             await repository.SaveChangesAsync();
@@ -68,7 +73,7 @@ namespace Baseball.Core.Servises
                 .Where(p => p.Id == id && p.IsDeleted == false);
         }
 
-        public async Task<AddPlayerViewModel> GetByIdAsync(int id)
+        public async Task<AddPlayerViewModel?> GetByIdAsync(int id)
         {
             return await GetById(id)
                 .Select(p => new AddPlayerViewModel()
@@ -82,13 +87,18 @@ namespace Baseball.Core.Servises
                     ThrowHand = p.ThrowHand,
                     BattingAverage = p.BattingAverage
                 })
-                .SingleAsync();
+                .FirstOrDefaultAsync();
         }
 
         public async Task UpdateAsync(int id, AddPlayerViewModel model)
         {
             var player = await GetById(id)
-                .SingleAsync();
+                .FirstOrDefaultAsync();
+
+            if (player == null)
+            {
+                throw new ArgumentException($"Player with id {id} was not found");
+            }
 
             player.Name = model.Name;
             player.Number = model.Number;
@@ -101,12 +111,7 @@ namespace Baseball.Core.Servises
             await repository.SaveChangesAsync();
         }
 
-        public Task AddToTeam(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<PlayerViewModel> GetPlayerByIdAsync(int id)
+        public async Task<PlayerViewModel?> GetPlayerByIdAsync(int id)
         {
             return await GetById(id)
                 .Select(p => new PlayerViewModel()
@@ -120,7 +125,7 @@ namespace Baseball.Core.Servises
                     ThrowHand = p.ThrowHand,
                     BattingAverage = p.BattingAverage.ToString("F3")
                 })
-                .SingleAsync();
+                .FirstOrDefaultAsync();
         }
 
         public async Task AddToTeamAsync(int playerId, int teamId)

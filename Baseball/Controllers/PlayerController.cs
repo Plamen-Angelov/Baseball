@@ -132,6 +132,11 @@ namespace Baseball.Controllers
                 await playerService.UpdateAsync(id, model);
                 return RedirectToAction(nameof(All));
             }
+            catch(ArgumentException ae)
+            {
+                logger.LogError(nameof(Edit), ae.Message);
+                return RedirectToAction(nameof(All));
+            }
             catch (Exception e)
             {
                 logger.LogError(nameof(Edit), e.Message);
@@ -148,6 +153,11 @@ namespace Baseball.Controllers
                 await playerService.DeleteAsync(id);
                 return RedirectToAction(nameof(All));
             }
+            catch(ArgumentException ae)
+            {
+                logger.LogError(nameof(Delete), ae.Message);
+                return RedirectToAction(nameof(All));
+            }
             catch (Exception e)
             {
                 logger.LogError(nameof(Delete), e.Message);
@@ -161,9 +171,17 @@ namespace Baseball.Controllers
         {
             try
             {
+                var player = await playerService.GetPlayerByIdAsync(id);
+
+                if (player == null)
+                {
+                    logger.LogError(nameof(AddToTeam), $"Player with id {id} was not found.");
+                    return RedirectToAction(nameof(All));
+                }
+
                 var model = new AddPlayerToTeamViewModel()
                 {
-                    Player = await playerService.GetPlayerByIdAsync(id),
+                    Player = player,
                     Teams = await teamService.GetAllTeamNamesAsync()
                 };
 
