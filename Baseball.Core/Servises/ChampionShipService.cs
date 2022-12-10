@@ -47,14 +47,7 @@ namespace Baseball.Core.Servises
 
         public async Task<ChampionShipDetailsViewModel> GetDetailsAsync(int id)
         {
-            var championShip = GetById(id);
-
-            if (championShip == null)
-            {
-                throw new ArgumentException($"ChampionShip with id {id} was not found");
-            }
-
-            var championShipDetails = await championShip
+            var championShipDetails = await GetById(id)
                 .Select(c => new ChampionShipDetailsViewModel()
                 {
                     Id = c.Id,
@@ -113,7 +106,7 @@ namespace Baseball.Core.Servises
                 .ToListAsync();
         }
 
-        public Task<EditChampionShipViewModel> GetByIdAsync(int id)
+        public Task<EditChampionShipViewModel?> GetByIdAsync(int id)
         {
             return GetById(id)
                 .Select(c => new EditChampionShipViewModel()
@@ -122,7 +115,7 @@ namespace Baseball.Core.Servises
                     Name = c.Name,
                     Year = c.Year
                 })
-                .SingleAsync();
+                .FirstOrDefaultAsync();
         }
 
         private IQueryable<ChampionShip> GetById(int id)
@@ -133,7 +126,7 @@ namespace Baseball.Core.Servises
 
         public async Task UpdateAsync(int id, EditChampionShipViewModel model)
         {
-            var championShip = await GetById(id).SingleAsync();
+            var championShip = await GetById(id).FirstOrDefaultAsync();
 
             if (championShip == null)
             {
@@ -160,12 +153,12 @@ namespace Baseball.Core.Servises
             await repository.SaveChangesAsync();
         }
 
-        public async Task<ChampionShip> GetEntityByIdAsync(int id)
+        public async Task<ChampionShip?> GetEntityByIdAsync(int id)
         {
             return await GetById(id)
                 .Include(c => c.Teams)
                 .Include(c => c.Games)
-                .SingleAsync();
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<HomePageViewModel>> GetHomePageAllAsync()
