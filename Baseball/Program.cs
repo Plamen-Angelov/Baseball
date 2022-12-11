@@ -39,7 +39,6 @@ builder.Services.AddScoped<IRepository, Repository>();
 
 builder.Services.AddScoped<IBatService, BatService>();
 builder.Services.AddScoped<IBatMaterialService, BatMaterialService>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPlayerServicece, PlayerService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IGameService, GameService>();

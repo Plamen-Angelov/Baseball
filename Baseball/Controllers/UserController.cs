@@ -3,19 +3,18 @@ using Baseball.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static Baseball.Common.RoleConstants;
 
 namespace Baseball.Controllers
 {
-    [Authorize(Roles = "Coach")]
+    [Authorize(Roles = $"{CoachRoleName}")]
     public class UserController : Controller
     {
-        private readonly IUserService userService;
         private readonly UserManager<IdentityUser> userManager;
         private readonly ILogger logger;
 
-        public UserController(IUserService userService, UserManager<IdentityUser> userManager, ILogger<UserController> logger)
+        public UserController(UserManager<IdentityUser> userManager, ILogger<UserController> logger)
         {
-            this.userService = userService;
             this.userManager = userManager;
             this.logger = logger;
         }
