@@ -12,7 +12,7 @@
             <th scope="col">HT Hits</th>
             <th scope="col">AT Errors</th>
             <th scope="col">HT Errors</th>
-            @if (User.IsInRole("Coach") || User.IsInRole("Playr"))
+            @if (User.IsInRole($"{CoachRoleName}") || User.IsInRole($"{PlayerRoleName}"))
             {
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -47,7 +47,7 @@
                 <td>@game.HomeTeamHits</td>
                 <td>@game.AwayTeamErrors</td>
                 <td>@game.HomeTeamErrors</td>
-                @if (User.IsInRole("Coach") || User.IsInRole("Playr"))
+                @if (User.IsInRole($"{CoachRoleName}") || User.IsInRole($"{PlayerRoleName}"))
                 {
                     <td>
                         <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Game" asp-action="Edit" asp-route-id="@game.Id">Edit</a>

@@ -5,7 +5,7 @@
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
-@if (User.IsInRole("Coach") || User.IsInRole("Player"))
+@if (User.IsInRole($"{CoachRoleName}") || User.IsInRole($"{PlayerRoleName}"))
 {
     <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Bat" asp-action="Add">Add new Bat</a>
 }
@@ -16,7 +16,7 @@
             <th scope="col"><h5>Brand</h5></th>
             <th scope="col"><h5>Size</h5></th>
             <th scope="col"><h5>Material</h5></th>
-            @if (User.IsInRole("Coach") || User.IsInRole("Player"))
+            @if (User.IsInRole($"{CoachRoleName}") || User.IsInRole($"{PlayerRoleName}"))
             {
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -30,7 +30,7 @@
                 <td>@bat.Brand</td>
                 <td>@bat.Size</td>
                 <td>@bat.Material</td>
-                @if (User.IsInRole("Coach") || User.IsInRole("Player"))
+                @if (User.IsInRole($"{CoachRoleName}") || User.IsInRole($"{PlayerRoleName}"))
                 {
                     <td>
                         <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Bat" asp-action="Edit" asp-route-id="@bat.id">Edit</a>

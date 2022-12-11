@@ -26,7 +26,7 @@
                 <td>@player.BattingAverage</td>
                 @if (player.TeamName == null)
                 {
-                    if (User.IsInRole("Coach") || User.IsInRole("Playr"))
+                    if (User.IsInRole($"{CoachRoleName}") || User.IsInRole($"{PlayerRoleName}"))
                     {
                         <td>
                             <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="AddToTeam" asp-route-id="@player.Id">Add to team</a>
@@ -41,7 +41,7 @@
                 {
                     <td>@player.TeamName</td>
                 }
-                @if (User.IsInRole("Coach") || User.IsInRole("Playr"))
+                @if (User.IsInRole($"{CoachRoleName}") || User.IsInRole($"{PlayerRoleName}"))
                 {
                     <td>
                         <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="Edit" asp-route-id="@player.Id">Edit</a>

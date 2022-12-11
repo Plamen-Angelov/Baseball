@@ -2,6 +2,7 @@
 using Baseball.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Baseball.Common.RoleConstants;
 
 namespace Baseball.Controllers
 {
@@ -58,7 +59,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Coach, Player")]
+        [Authorize(Roles = $"{CoachRoleName}, {PlayerRoleName}")]
         public IActionResult Add()
         {
             var championShip = new AddChampionShipViewModel();
@@ -66,7 +67,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Coach, Player")]
+        [Authorize(Roles = $"{CoachRoleName}, {PlayerRoleName}")]
         public async Task<IActionResult> Add(AddChampionShipViewModel model)
         {
             if (!ModelState.IsValid)
@@ -88,7 +89,7 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Coach, Player")]
+        [Authorize(Roles = $"{CoachRoleName}, {PlayerRoleName}")]
         public async Task<IActionResult> Edit(int id)
         {
             try
@@ -109,7 +110,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Coach, Player")]
+        [Authorize(Roles = $"{CoachRoleName}, {PlayerRoleName}")]
         public async Task<IActionResult> Edit(int id, EditChampionShipViewModel model)
         {
             if (!ModelState.IsValid)
@@ -140,7 +141,7 @@ namespace Baseball.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Coach, Player")]
+        [Authorize(Roles = $"{CoachRoleName}, {PlayerRoleName}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
