@@ -13,9 +13,11 @@ namespace Baseball.Infrastructure.Data.Entities
         [MaxLength(Team_Name_MaxLength)]
         public string Name { get; set; } = null!;
 
+        [Required]
         [MaxLength(Team_Color_MaxLength)]
         public string HomeColor { get; set; } = null!;
 
+        [Required]
         [MaxLength(Team_Color_MaxLength)]
         public string AwayColor { get; set; } = null!;
 

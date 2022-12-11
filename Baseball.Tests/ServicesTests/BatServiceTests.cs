@@ -25,13 +25,8 @@ namespace Baseball.UnitTests.ServicesTests
             batService = new BatService(repository, batMaterialService, mockLogger.Object);
 
             var bats = GetBats();
-
-            foreach (var bat in bats)
-            {
-                await repository.AddAsync(bat);
-            }
-
-            await repository.SaveChangesAsync();
+            await inMemoryDb.Context.AddRangeAsync(bats);
+            await inMemoryDb.Context.SaveChangesAsync();
         }
 
         [TearDown]
@@ -51,10 +46,11 @@ namespace Baseball.UnitTests.ServicesTests
             };
 
             await batService.AddAsync(bat);
-            var allBatsCount = (await batService.GetAllAsync()).Count();
+            var allBats = await batService.GetAllAsync();
 
-            Assert.IsFalse(allBatsCount == default);
-            Assert.IsTrue(allBatsCount == 3);
+            Assert.IsFalse(allBats == default);
+            Assert.IsTrue(allBats.Count() == 3);
+            Assert.IsTrue(allBats.Any(x => x.Brand == "E7" && x.Size == 33));
         }
 
         [Test]

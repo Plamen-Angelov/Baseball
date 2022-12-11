@@ -14,9 +14,6 @@ namespace Baseball.UnitTests.ServicesTests
         private IChampionShipService championShipService;
         private ITeamService teamService;
         private GameService gameService;
-        //private Mock<IGameService> mockGameService;
-        //private Mock<ITeamService> mockTeamService;
-        //private Mock<IChampionShipService> mockChampionShipService;
 
         [SetUp]
         public async Task Setup()
@@ -25,9 +22,6 @@ namespace Baseball.UnitTests.ServicesTests
             repository = new Repository(inMemoryDb.Context);
             teamService = new TeamService(repository);
             championShipService = new ChampionShipService(repository, teamService);
-            //mockGameService = new Mock<IGameService>();
-            //mockTeamService = new Mock<ITeamService>();
-            //mockChampionShipService = new Mock<IChampionShipService>();
             gameService = new GameService(repository, championShipService, teamService);
 
             var games = GetGames();
@@ -45,12 +39,7 @@ namespace Baseball.UnitTests.ServicesTests
                 new Team() { Name = "Team Varna", HomeColor = "Blue", AwayColor = "Gray" },
                 new Team() { Name = "Team Sofia", HomeColor = "Red", AwayColor = "White" }
             };
-            inMemoryDb.Context.AddRange(teams);
-
-            //foreach (var game in games)
-            //{
-            //    await repository.AddAsync(game);
-            //}
+            await inMemoryDb.Context.AddRangeAsync(teams);
             await repository.SaveChangesAsync();
         }
 

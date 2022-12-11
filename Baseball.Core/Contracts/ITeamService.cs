@@ -9,11 +9,11 @@ namespace Baseball.Core.Contracts
 
         Task AddAsync(AddTeamModel model);
 
-        Task<TeamDetailsViewModel> GetDetailsAsync(int id);
+        Task<TeamDetailsViewModel?> GetDetailsAsync(int id);
 
         Task<EditTeamViewModel?> GetByIdAsync(int id);
 
-        Task<Team> GetEntityByIdAsync(int id);
+        Task<Team?> GetEntityByIdAsync(int id);
 
         Task UpdateAsync(int id, EditTeamViewModel model);
 

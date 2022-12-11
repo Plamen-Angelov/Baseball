@@ -73,10 +73,10 @@ namespace Baseball.Core.Servises
         private IQueryable<Team> GetById(int id)
         {
             return repository.GetAll<Team>()
-                .Where(t => t.Id == id);
+                .Where(t => t.Id == id && t.IsDeleted == false);
         }
 
-        public async Task<TeamDetailsViewModel> GetDetailsAsync(int id)
+        public async Task<TeamDetailsViewModel?> GetDetailsAsync(int id)
         {
             var team = await GetById(id)
                 .Select(t => new TeamDetailsViewModel()
@@ -155,7 +155,7 @@ namespace Baseball.Core.Servises
                 .ToListAsync();
         }
 
-        public async Task<Team> GetEntityByIdAsync(int id)
+        public async Task<Team?> GetEntityByIdAsync(int id)
         {
             return await GetById(id)
                 .Include(x => x.HomeGames)
