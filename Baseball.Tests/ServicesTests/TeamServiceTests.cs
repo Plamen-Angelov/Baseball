@@ -24,6 +24,12 @@ namespace Baseball.UnitTests.ServicesTests
             await inMemoryDb.Context.SaveChangesAsync();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            inMemoryDb.Context.Dispose();
+        }
+
         [Test]
         public async Task Add_ShouldAddTeamSuccessfully()
         {
@@ -155,12 +161,6 @@ namespace Baseball.UnitTests.ServicesTests
             var team = await teamService.GetByIdAsync(id);
 
             Assert.IsNull(team);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            inMemoryDb.Context.Dispose();
         }
 
         public List<Team> GetTeams()
