@@ -46,9 +46,9 @@ namespace Baseball.Controllers
                 var championShipDetails = await championShipService.GetDetailsAsync(id);
                 return View(championShipDetails);
             }
-            catch(InvalidOperationException oe)
+            catch(ArgumentNullException ae)
             {
-                logger.LogError(nameof(GetDetails), oe.Message);
+                logger.LogError(nameof(GetDetails), ae.Message);
                 return RedirectToAction(nameof(All));
             }
             catch (Exception e)

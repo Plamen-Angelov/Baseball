@@ -78,7 +78,12 @@ namespace Baseball.Core.Servises
                     })
                     .ToList()
                 })
-                .SingleAsync();
+                .FirstOrDefaultAsync();
+
+            if (championShipDetails == null)
+            {
+                throw new ArgumentNullException("Championship was not found");
+            }
 
             foreach (var team in championShipDetails.Teams)
             {
@@ -87,9 +92,10 @@ namespace Baseball.Core.Servises
                 team.LoseGames = await teamService.GetLosesAsync(teamEntity);
             }
 
-            championShipDetails.Teams
+            championShipDetails.Teams = championShipDetails.Teams
                 .OrderByDescending(t => t.WinGames)
-                .ThenBy(t => t.LoseGames);
+                .ThenBy(t => t.LoseGames)
+                .ToList();
 
             return championShipDetails;
         }
@@ -170,6 +176,7 @@ namespace Baseball.Core.Servises
                     ChampionShipName = c.Name,
                     ChampionShipYear = c.Year,
                     Teams = c.Teams
+                    .Where(t => t.IsDeleted == false)
                     .Select(t => new TeamScoreViewModel()
                     {
                         Id = t.Id,
@@ -188,9 +195,10 @@ namespace Baseball.Core.Servises
                     team.LoseGames = await teamService.GetLosesAsync(teamEntity);
                 }
 
-                championShip.Teams
+                championShip.Teams = championShip.Teams
                                 .OrderByDescending(t => t.WinGames)
-                                .ThenBy(t => t.LoseGames);
+                                .ThenBy(t => t.LoseGames)
+                                .ToList();
             }
 
             return championShips;

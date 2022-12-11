@@ -87,6 +87,7 @@ namespace Baseball.Core.Servises
                     WinGames = t.WinGames,
                     loseGames = t.loseGames,
                     Players = t.Players
+                    .Where(p => p.IsDeleted == false)
                     .Select(p => new PlayerViewModel()
                     {
                         Id = p.Id,
