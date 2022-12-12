@@ -83,7 +83,7 @@ namespace Baseball.UnitTests.ServicesTests
         [TestCase(5)]
         public async Task GetDetails_ShouldThrowArgumentException_WhenChampionShipIsNotFound(int id)
         {
-            Assert.ThrowsAsync<InvalidOperationException>(async Task () => await championShipService.GetDetailsAsync(id));
+            Assert.ThrowsAsync<ArgumentNullException>(async Task () => await championShipService.GetDetailsAsync(id));
         }
 
         [Test]

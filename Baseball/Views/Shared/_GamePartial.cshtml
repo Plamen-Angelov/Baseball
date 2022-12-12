@@ -1,13 +1,15 @@
-﻿<table class="table">
+﻿@model List<GameViewModel>
+
+<table class="table">
     <thead class="thead-light">
         <tr>
             <th scope="col">Championship</th>
             <th scope="col">Away Team</th>
             <th scope="col">Home Team</th>
             <th scope="col">Stadium</th>
-            <th scope="col">Innings</th>
             <th scope="col">AT Runs</th>
             <th scope="col">HT Runs</th>
+            <th scope="col">Innings</th>
             <th scope="col">AT Hits</th>
             <th scope="col">HT Hits</th>
             <th scope="col">AT Errors</th>
@@ -40,9 +42,9 @@
                     <td>@game.HomeTeamName</td>
                 }
                 <td>@game.Stadium</td>
-                <td>@game.InningPlayed</td>
                 <td>@game.AwayTeamRuns</td>
                 <td>@game.HomeTeamRuns</td>
+                <td>@game.InningPlayed</td>
                 <td>@game.AwayTeamHits</td>
                 <td>@game.HomeTeamHits</td>
                 <td>@game.AwayTeamErrors</td>

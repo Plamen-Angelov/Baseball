@@ -35,70 +35,7 @@
 {
     <h3 class="text-center">Games</h3>
 
-    <table class="table">
-        <thead class="thead-light">
-            <tr>
-                <th scope="col">Championship</th>
-                <th scope="col">Away Team</th>
-                <th scope="col">Home Team</th>
-                <th scope="col">Stadium</th>
-                <th scope="col">AT Runs</th>
-                <th scope="col">HT Runs</th>
-                <th scope="col">Innings</th>
-                <th scope="col">AT Hits</th>
-                <th scope="col">HT Hits</th>
-                <th scope="col">AT Errors</th>
-                <th scope="col">HT Errors</th>
-                @if (User.IsInRole($"{CoachRoleName}") || User.IsInRole($"{PlayerRoleName}"))
-                {
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var game in Model.Games)
-            {
-                <tr>
-                    <td>@game.ChampionShip</td>
-                    @if (game.AwayTeamRuns > game.HomeTeamRuns)
-                    {
-                        <td><strong>@game.AwayTeamName</strong></td>
-                        <td>@game.HomeTeamName</td>
-                    }
-                    else if (game.AwayTeamRuns < game.HomeTeamRuns)
-                    {
-                        <td>@game.AwayTeamName</td>
-                        <td><strong>@game.HomeTeamName</strong></td>
-                    }
-                    else
-                    {
-                        <td>@game.AwayTeamName</td>
-                        <td>@game.HomeTeamName</td>
-                    }
-                    <td>@game.Stadium</td>
-                    <td>@game.AwayTeamRuns</td>
-                    <td>@game.HomeTeamRuns</td>
-                    <td>@game.InningPlayed</td>
-                    <td>@game.AwayTeamHits</td>
-                    <td>@game.HomeTeamHits</td>
-                    <td>@game.AwayTeamErrors</td>
-                    <td>@game.HomeTeamErrors</td>
-                    @if (User.IsInRole($"{CoachRoleName}") || User.IsInRole($"{PlayerRoleName}"))
-                    {
-                        <td>
-                            <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Game" asp-action="Edit" asp-route-id="@game.Id">Edit</a>
-                        </td>
-                        <td>
-                            <form class="input-group-sm" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id">
-                                <input class="fs-6 btn btn-danger mb-3 p-2" type="submit" value="Delete" />
-                            </form>
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
+    <partial name="_GamePartial" model="@Model.Games" />
 }
 
 @if (!Model.Teams.Any() && !Model.Games.Any())
