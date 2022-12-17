@@ -48,9 +48,9 @@ namespace Baseball.Core.Servises
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<PlayerViewModel>> GetAllAsync()
+        public async Task<IEnumerable<PlayerViewModel>> GetAllAsync(string? teamName = null, string? searchText = null, PlayerSorting? sorting = null)
         {
-            return await repository.GetAll<Player>()
+            var players = repository.GetAll<Player>()
                 .Where(p => p.IsDeleted == false)
                 .Select(p => new PlayerViewModel()
                 {
@@ -61,10 +61,46 @@ namespace Baseball.Core.Servises
                     Bat = $"{p.Bat.Brand} - {p.Bat.BatMaterial.Name} {p.Bat.Size}inch.",
                     Glove = p.Glove,
                     ThrowHand = p.ThrowHand,
+                    BattingAverageDouble = p.BattingAverage,
                     BattingAverage = p.BattingAverage.ToString("F3"),
                     TeamName = p.Team.Name
-                })
-                .ToListAsync();
+                });
+
+            if (string.IsNullOrEmpty(teamName) == false)
+            {
+                players = players
+                    .Where(p => p.TeamName == teamName);
+            }
+
+            if (string.IsNullOrEmpty(searchText) == false)
+            {
+                var searchBy = searchText.Split(new string[] {",", ", ", " " }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var search in searchBy)
+                {
+                    var searchTerm = $"%{search.ToLower()}%";
+
+                    players = players
+                        .Where(p => EF.Functions.Like(p.Position.ToLower(), searchTerm));
+                }
+            }
+
+            if (string.IsNullOrEmpty(sorting.ToString()) == false)
+            {
+                players = sorting switch
+                {
+                    PlayerSorting.NoSorting => players,
+                    PlayerSorting.BatingAvgDesc => players
+                    .OrderByDescending(p => p.BattingAverageDouble),
+                    PlayerSorting.BatingAvgAsc => players
+                    .OrderBy(p => p.BattingAverageDouble),
+                    PlayerSorting.NameAsc => players
+                    .OrderBy(p => p.Name),
+                    PlayerSorting.NameDesc => players
+                    .OrderByDescending(p => p.Name)
+                };
+            }
+
+            return await players.ToListAsync();
         }
 
         private IQueryable<Player> GetById(int id)

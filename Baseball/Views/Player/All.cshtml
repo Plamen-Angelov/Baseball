@@ -1,4 +1,4 @@
-﻿@model List<PlayerViewModel>
+﻿@model AllPlayersViewModel
 
 @{
     ViewBag.Title = "All Players";
@@ -10,4 +10,44 @@
     <a class="fs-6 btn btn-success mb-3 p-2" asp-area="" asp-controller="Player" asp-action="Add">Add new Player</a>
 }
 
-<partial name="_PlayerPartial"/>
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group">
+                <label asp-for="TeamName">Teams</label>
+                <select asp-for="TeamName" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var teamName in Model.TeamNames)
+                    {
+                        <option value="@teamName.Name">@teamName.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-md-3">
+            <label asp-for="SearchText">Search by position</label>
+            <input asp-for="SearchText" class="form-control" placeholder="...">
+        </div>
+
+        <div class="form-group col-md-3">
+            <div class="form-group">
+                <label asp-for="Sorting"></label>
+                <select asp-for="Sorting" class="form-control">
+                    <option value="0">No sorting</option>
+                    <option value="1">Bating average Asc</option>
+                    <option value="2">Bating average Desc</option>
+                    <option value="3">Name Asc</option>
+                    <option value="4">Name Desc</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group mt-4 p-2">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<partial name="_PlayerPartial" , model="Model.Players" />

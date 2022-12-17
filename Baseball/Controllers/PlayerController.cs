@@ -33,12 +33,16 @@ namespace Baseball.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromQuery]AllPlayersViewModel model)
         {
             try
             {
-                var players = await playerService.GetAllAsync();
-                return View(players);
+                var players = await playerService.GetAllAsync(model.TeamName, model.SearchText, model.Sorting);
+
+                model.Players = players;
+                model.TeamNames = await teamService.GetAllTeamNamesAsync();
+
+                return View(model);
             }
             catch (Exception e)
             {

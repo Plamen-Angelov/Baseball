@@ -4,7 +4,7 @@ namespace Baseball.Core.Contracts
 {
     public interface IPlayerServicece
     {
-        Task<IEnumerable<PlayerViewModel>> GetAllAsync();
+        Task<IEnumerable<PlayerViewModel>> GetAllAsync(string? teamName = null, string? searchText = null, PlayerSorting? sorting = null);
 
         Task AddAsync(AddPlayerViewModel model);
 

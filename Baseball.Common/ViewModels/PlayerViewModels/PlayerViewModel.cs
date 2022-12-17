@@ -18,6 +18,8 @@
 
         public string BattingAverage { get; set; } = null!;
 
+        public double BattingAverageDouble { get; set; }
+
         public string? TeamName { get; set; }
     }
 }
